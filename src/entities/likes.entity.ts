@@ -16,11 +16,11 @@ export class Likes {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ default: null })
+  @Column({ default: false })
   @ApiProperty()
   hasLiked: boolean;
 
-  @Column({ default: null })
+  @Column({ default: false })
   @ApiProperty()
   hasDisliked: boolean;
 

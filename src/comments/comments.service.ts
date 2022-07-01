@@ -13,10 +13,12 @@ import { Comments } from '../entities/comments.entity';
 import { CreateCommentDto } from './dto/create.comment.dto';
 import { Request } from 'express';
 import { CommentStatus } from './dto/update.comment.dto';
+import { LikesService } from '../likes/likes.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export class CommentsService {
   constructor(
+    private readonly likeService: LikesService,
     @InjectRepository(Comments)
     private readonly commentRepository: Repository<Comments>,
     @Inject(REQUEST)
@@ -87,6 +89,8 @@ export class CommentsService {
     if (valid) {
       await this.commentRepository.delete(id);
 
+      await this.likeService.deleteLike(id);
+
       const resp: ReqResponse = {
         status: 200,
         success: true,
@@ -105,6 +109,10 @@ export class CommentsService {
       foundComment.likesCount += 1;
     } else if (foundComment && data === 'dislike') {
       foundComment.likesCount -= 1;
+    } else if (foundComment && data === 'switchLike') {
+      foundComment.likesCount += 2;
+    } else if (foundComment && data === 'switchDislike') {
+      foundComment.likesCount -= 2;
     } else {
       throw new NotFoundException('Comment not found');
     }

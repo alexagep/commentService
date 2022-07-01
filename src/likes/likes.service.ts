@@ -1,29 +1,22 @@
 import {
   BadRequestException,
-  forwardRef,
   Inject,
   Injectable,
-  Scope,
   UnauthorizedException,
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ReqResponse } from '../schemas/response';
-import { Repository } from 'typeorm';
+import { Repository, createQueryBuilder } from 'typeorm';
 import { Likes } from '../entities/likes.entity';
 import { CreateLikeDto } from './dto/create.like.dto';
 import { Request } from 'express';
 import { CommentsService } from '../comments/comments.service';
 import { CommentStatus } from '../comments/dto/update.comment.dto';
-import { Comments } from '../entities/comments.entity';
 
 @Injectable()
 export class LikesService {
   constructor(
-    // @Inject(forwardRef(() => CommentsService))
-
-    // (forwardRef(() => CommentsService)),
-
     private readonly commentsService: CommentsService,
     @InjectRepository(Likes)
     private readonly likeRepository: Repository<Likes>,
@@ -43,117 +36,128 @@ export class LikesService {
       throw new BadRequestException('Like and Dislike cannot be same');
     }
     const user: any = this.request.user;
-    // console.log(user, data.commentId, '**********************');
 
     const likeHistory = await this.findLikes(data.commentId, user.id);
     if (likeHistory.length == 0) {
-      await this.likeRepository.save({
-        senderId: user.id,
-        commentId: data.commentId,
-        hasLiked: data.like,
-        hasDisliked: data.dislike,
-      });
       if (data.like) {
-        this.like(data.commentId);
+        await this.updateLikeCount(data.commentId, 'like');
+        likeHistory[0].hasLiked = true;
       } else if (data.dislike) {
-        this.dislike(data.commentId);
+        await this.updateLikeCount(data.commentId, 'dislike');
+        likeHistory[0].hasDisliked = true;
       }
-      return {
-        status: 200,
-        success: true,
-        message: 'You have voted this comment successfully',
-        error: false,
-      };
+      return await this.saveLikeRepo(likeHistory[0]);
     } else {
-      if (likeHistory.length > 0 && likeHistory[0].hasLiked === data.like) {
-        this.dislike(data.commentId);
-
-        await this.deleteLike(likeHistory[0].id);
-        return {
-          status: 200,
-          success: true,
-          message: 'You have rolebacked your previous vote',
-          error: false,
-        };
-      } else if (
-        likeHistory.length > 0 &&
-        likeHistory[0].hasDisliked === data.dislike
+      if (
+        (likeHistory.length > 0 && likeHistory[0].hasLiked === data.like) ||
+        (likeHistory.length > 0 && likeHistory[0].hasDisliked === data.dislike)
       ) {
-        this.like(data.commentId);
-
-        await this.deleteLike(likeHistory[0].id);
         return {
-          status: 200,
-          success: true,
-          message: 'You have rolebacked your previous vote',
-          error: false,
+          status: 400,
+          success: false,
+          message: 'You have already voted this comment',
+          error: true,
         };
       } else if (
         likeHistory.length > 0 &&
         likeHistory[0].hasDisliked &&
         data.like
       ) {
-        this.like(data.commentId);
-        this.like(data.commentId);
+        await this.updateLikeCount(data.commentId, 'switchLike');
 
-        await this.likeRepository.save({
-          senderId: user.id,
-          commentId: data.commentId,
-          hasDisliked: false,
-          hasLiked: true,
-        });
-        return {
-          status: 200,
-          success: true,
-          message: 'You have voted this comment successfully',
-          error: false,
-        };
+        likeHistory[0].hasDisliked = false;
+        likeHistory[0].hasLiked = true;
+        return await this.updateLikeRepo(likeHistory[0]);
       } else if (
         likeHistory.length > 0 &&
         likeHistory[0].hasLiked &&
         data.dislike
       ) {
-        this.dislike(data.commentId);
-        this.dislike(data.commentId);
+        await this.updateLikeCount(data.commentId, 'switchDislike');
 
-        await this.likeRepository.save({
-          senderId: user.id,
-          commentId: data.commentId,
-          hhasDisliked: true,
-          hasLiked: false,
-        });
-        return {
-          status: 200,
-          success: true,
-          message: 'You have voted this comment successfully',
-          error: false,
-        };
+        likeHistory[0].hasDisliked = true;
+        likeHistory[0].hasLiked = false;
+        return await this.updateLikeRepo(likeHistory[0]);
       }
     }
   }
 
-  async like(commentId: number) {
-    await this.commentsService.updateComment(commentId, CommentStatus.LIKE);
+  async updateLikeRepo(data) {
+    await this.likeRepository
+      .createQueryBuilder()
+      .update(Likes)
+      .set({
+        hasDisliked: data.hasDisliked,
+        hasLiked: data.hasLiked,
+        commentId: data.commentId,
+        senderId: data.senderId,
+      })
+      .where('id = :id', { id: data.id })
+      .execute();
+
+    return {
+      status: 200,
+      success: true,
+      message: 'You have voted this comment successfully',
+      error: false,
+    };
   }
 
-  async dislike(commentId: number) {
-    await this.commentsService.updateComment(commentId, CommentStatus.DISLIKE);
+  async saveLikeRepo(data) {
+    await this.likeRepository.save({
+      senderId: data.id,
+      commentId: data.commentId,
+      hasDisliked: data.hasDisliked,
+      hasLiked: data.hasLiked,
+    });
+    return {
+      status: 200,
+      success: true,
+      message: 'You have voted this comment successfully',
+      error: false,
+    };
   }
 
-  async deleteLike(id: number): Promise<ReqResponse> {
-    const valid = await this.validateUser(id);
-    if (valid) {
-      await this.likeRepository.delete(id);
+  async updateLikeCount(commentId: number, likeState) {
+    if (likeState === 'like') {
+      await this.commentsService.updateComment(commentId, CommentStatus.LIKE);
+    } else if (likeState === 'dislike') {
+      await this.commentsService.updateComment(
+        commentId,
+        CommentStatus.DISLIKE,
+      );
+    } else if (likeState === 'switchLike') {
+      await this.commentsService.updateComment(
+        commentId,
+        CommentStatus.SWITCH_LIKE,
+      );
+    } else if (likeState === 'switchDislike') {
+      await this.commentsService.updateComment(
+        commentId,
+        CommentStatus.SWITCH_DISLIKE,
+      );
+    }
+  }
 
-      const resp: ReqResponse = {
-        status: 200,
-        success: true,
-        message: 'Like deleted successfully',
-        error: false,
-      };
-      return resp;
-    } else {
-      throw new UnauthorizedException();
+  async deleteLike(commentId: number): Promise<ReqResponse> {
+    const likeData = await this.likeRepository.find({
+      where: { commentId },
+    });
+    if (likeData[0]) {
+      const valid = await this.validateUser(likeData[0].senderId);
+      if (valid) {
+        await this.likeRepository.delete(commentId);
+
+        const resp: ReqResponse = {
+          status: 200,
+          success: true,
+          message: 'Like deleted successfully',
+          error: false,
+        };
+        return resp;
+      } else {
+        throw new UnauthorizedException();
+      }
     }
   }
 
