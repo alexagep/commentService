@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  forwardRef,
   Inject,
   Injectable,
   UnauthorizedException,
@@ -17,7 +18,9 @@ import { CommentStatus } from '../comments/dto/update.comment.dto';
 @Injectable()
 export class LikesService {
   constructor(
-    private readonly commentsService: CommentsService,
+    // private readonly commentsService: CommentsService,
+    @Inject(forwardRef(() => CommentsService))
+    private commentsService: CommentsService,
     @InjectRepository(Likes)
     private readonly likeRepository: Repository<Likes>,
     @Inject(REQUEST)
@@ -40,10 +43,10 @@ export class LikesService {
     const likeHistory = await this.findLikes(data.commentId, user.id);
     if (likeHistory.length == 0) {
       if (data.like) {
-        await this.updateLikeCount(data.commentId, 'like');
+        await this.updateLikeCount(data.commentId, CommentStatus.LIKE);
         likeHistory[0].hasLiked = true;
       } else if (data.dislike) {
-        await this.updateLikeCount(data.commentId, 'dislike');
+        await this.updateLikeCount(data.commentId, CommentStatus.DISLIKE);
         likeHistory[0].hasDisliked = true;
       }
       return await this.saveLikeRepo(likeHistory[0]);
@@ -63,7 +66,7 @@ export class LikesService {
         likeHistory[0].hasDisliked &&
         data.like
       ) {
-        await this.updateLikeCount(data.commentId, 'switchLike');
+        await this.updateLikeCount(data.commentId, CommentStatus.SWITCH_LIKE);
 
         likeHistory[0].hasDisliked = false;
         likeHistory[0].hasLiked = true;
@@ -73,7 +76,10 @@ export class LikesService {
         likeHistory[0].hasLiked &&
         data.dislike
       ) {
-        await this.updateLikeCount(data.commentId, 'switchDislike');
+        await this.updateLikeCount(
+          data.commentId,
+          CommentStatus.SWITCH_DISLIKE,
+        );
 
         likeHistory[0].hasDisliked = true;
         likeHistory[0].hasLiked = false;
@@ -118,7 +124,10 @@ export class LikesService {
     };
   }
 
-  async updateLikeCount(commentId: number, likeState) {
+  async updateLikeCount(
+    commentId: number,
+    likeState: CommentStatus,
+  ): Promise<void> {
     if (likeState === 'like') {
       await this.commentsService.updateComment(commentId, CommentStatus.LIKE);
     } else if (likeState === 'dislike') {
@@ -159,6 +168,16 @@ export class LikesService {
         throw new UnauthorizedException();
       }
     }
+  }
+
+  async recognizeCommentIsLiked(senderId: number, commentId: number) {
+    const result = await this.likeRepository.find({
+      where: { senderId, commentId, hasLiked: true },
+    });
+    if (result.length == 0) {
+      return false;
+    }
+    return true;
   }
 
   async validateUser(id: number): Promise<boolean> {

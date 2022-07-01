@@ -1,11 +1,13 @@
 import {
+  forwardRef,
   Inject,
   Injectable,
   NotFoundException,
+  OnModuleInit,
   Scope,
   UnauthorizedException,
 } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
+import { ModuleRef, REQUEST } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ReqResponse } from '../schemas/response';
 import { Repository } from 'typeorm';
@@ -15,15 +17,21 @@ import { Request } from 'express';
 import { CommentStatus } from './dto/update.comment.dto';
 import { LikesService } from '../likes/likes.service';
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class CommentsService {
   constructor(
-    private readonly likeService: LikesService,
+    // private readonly moduleRef: ModuleRef,
+    @Inject(forwardRef(() => LikesService))
+    private likeService: LikesService,
     @InjectRepository(Comments)
     private readonly commentRepository: Repository<Comments>,
     @Inject(REQUEST)
     private readonly request: Request,
   ) {}
+
+  // onModuleInit() {
+  //   this.likeService = this.moduleRef.get(LikesService);
+  // }
 
   // find comments by post id
   async findComments(id: number) {
@@ -34,25 +42,32 @@ export class CommentsService {
     const result = this.commentRepository
       .createQueryBuilder('comments')
       .select([
-        // 'posts.id',
-        // 'posts.content',
-        // 'posts.postedAt',
         'comments.id',
         'comments.content',
         'comments.postedAt',
-        'comments.userId',
+        'comments.senderId',
         'comments.likesCount',
       ])
-      // .from(Users, 'users')
       .leftJoin('comments.post', 'posts')
       .where('posts.id = :id', { id: id })
+      // .innerJoin()
       .skip((pageIndex - 1) * pageSize)
       .take(10)
       .orderBy('comments.postedAt', 'DESC')
-      // .where('users.id = :id', { id: id })
       .limit(limit)
       .getManyAndCount();
+
+    const likeHistory = await this.commentIsLikedByUser(result[0].commentId);
+    if (likeHistory == true) {
+      result[0].likedByUser = true;
+    }
     return result;
+  }
+
+  async commentIsLikedByUser(commentId: number) {
+    const user: any = this.request.user;
+    const userId = user.id;
+    return this.likeService.recognizeCommentIsLiked(userId, commentId);
   }
 
   //find comment by id
