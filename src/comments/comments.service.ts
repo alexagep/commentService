@@ -16,11 +16,12 @@ import { CreateCommentDto } from './dto/create.comment.dto';
 import { Request } from 'express';
 import { CommentStatus } from './dto/update.comment.dto';
 import { LikesService } from '../likes/likes.service';
+import { Likes } from '../entities/likes.entity';
+import { Posts } from '../entities/posts.entity';
 
 @Injectable()
 export class CommentsService {
   constructor(
-    // private readonly moduleRef: ModuleRef,
     @Inject(forwardRef(() => LikesService))
     private likeService: LikesService,
     @InjectRepository(Comments)
@@ -29,15 +30,13 @@ export class CommentsService {
     private readonly request: Request,
   ) {}
 
-  // onModuleInit() {
-  //   this.likeService = this.moduleRef.get(LikesService);
-  // }
-
   // find comments by post id
   async findComments(id: number) {
     const pageIndex = 1;
     const pageSize = 10;
     const limit = 10;
+    const user: any = this.request.user;
+    const userId = user.id;
 
     const result = this.commentRepository
       .createQueryBuilder('comments')
@@ -47,20 +46,23 @@ export class CommentsService {
         'comments.postedAt',
         'comments.senderId',
         'comments.likesCount',
+        'likes.hasLiked',
       ])
-      .leftJoin('comments.post', 'posts')
+      .leftJoin(Posts, 'posts', 'comments.postId = posts.id')
+      .innerJoin(Likes, 'likes', 'comments.id = likes.commentId')
       .where('posts.id = :id', { id: id })
-      // .innerJoin()
+      .andWhere(`likes.senderId = ${userId}`)
+      .andWhere(`likes.hasLiked = ${true}`)
       .skip((pageIndex - 1) * pageSize)
       .take(10)
       .orderBy('comments.postedAt', 'DESC')
       .limit(limit)
       .getManyAndCount();
 
-    const likeHistory = await this.commentIsLikedByUser(result[0].commentId);
-    if (likeHistory == true) {
-      result[0].likedByUser = true;
-    }
+    // const likeHistory = await this.commentIsLikedByUser(result[0].commentId);
+    // if (likeHistory == true) {
+    //   result[0].likedByUser = true;
+    // }
     return result;
   }
 
