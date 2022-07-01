@@ -2,9 +2,10 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
+  // Get,
   Param,
   ParseIntPipe,
+  Post,
   Put,
   UseGuards,
 } from '@nestjs/common';
@@ -12,12 +13,12 @@ import {
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
-  ApiOkResponse,
+  // ApiOkResponse,
 } from '@nestjs/swagger';
 import { CreateCommentDto } from './dto/create.comment.dto';
 import { CommentsService } from './comments.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { Comment } from '../entities/comments.entity';
+// import { Comments } from '../entities/comments.entity';
 import { ReqResponse } from '../schemas/response';
 import { CommentStatus } from './dto/update.comment.dto';
 
@@ -26,21 +27,22 @@ import { CommentStatus } from './dto/update.comment.dto';
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
-  @ApiBearerAuth('access-token')
-  @ApiOkResponse({
-    isArray: false,
-    description: 'Get An Comment',
-  })
-  @Get(':id')
-  async find(@Param('id', ParseIntPipe) postId: number): Promise<Comment[]> {
-    return await this.commentsService.findComments(postId);
-  }
+  // @ApiBearerAuth('access-token')
+  // @ApiOkResponse({
+  //   isArray: false,
+  //   description: 'Get An Comment',
+  // })
+  // @Get(':id')
+  // async find(@Param('id', ParseIntPipe) postId: number): Promise<Comments[]> {
+  //   return await this.commentsService.findComments(postId);
+  // }
 
   @ApiBearerAuth('access-token')
   @ApiCreatedResponse({
     type: CreateCommentDto,
     description: 'Create A Comment',
   })
+  @Post()
   async create(@Body() Comment: CreateCommentDto): Promise<ReqResponse> {
     const savedComment = await this.commentsService.createComment(Comment);
     return savedComment;

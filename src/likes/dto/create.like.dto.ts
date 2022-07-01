@@ -3,7 +3,6 @@ import { IsBoolean, IsNotEmpty } from 'class-validator';
 import { CreateDateColumn } from 'typeorm';
 
 export class CreateLikeDto {
-
   @IsBoolean()
   @ApiProperty()
   like: boolean;

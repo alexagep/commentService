@@ -19,15 +19,14 @@ import {
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostService } from './post.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { Posts } from '../entities/post.entity';
+import { Posts } from '../entities/posts.entity';
 import { ReqResponse } from '../schemas/response';
 import { UpdatePostDto } from './dto/update-post.dto';
 
 @UseGuards(JwtAuthGuard)
-@Controller('post')
+@Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
-
 
   // @ApiOkResponse({
   //   type: CreatePostDto,
@@ -44,8 +43,8 @@ export class PostController {
     description: 'Get An User',
   })
   @Get(':id')
-  async getPosts(): Promise<Posts[]> {
-    return await this.postService.findPosts();
+  async getPosts(@Param('id', ParseIntPipe) id: number): Promise<Posts[]> {
+    return await this.postService.findPosts(id);
   }
 
   @ApiCreatedResponse({ type: CreatePostDto, description: 'Create A Post' })

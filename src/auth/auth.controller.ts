@@ -1,7 +1,7 @@
 import {
   Body,
   Controller,
-  Get,
+  // Get,
   Param,
   ParseIntPipe,
   Post,
@@ -13,13 +13,12 @@ import { AuthService } from './auth.service';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { UpdatePassDto } from './dto/update-pass.dto';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-
+import { AuthRegisterDto } from './dto/auth-register.dto';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
-
 
   @ApiBearerAuth('access-token') //edit here
   @ApiOkResponse({
@@ -47,10 +46,9 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(@Body() authLoginDto: AuthLoginDto) {
-    return await this.authService.login___(authLoginDto);
+  async register(@Body() authRegisterDto: AuthRegisterDto) {
+    return await this.authService.createUser(authRegisterDto);
   }
-
 
   @Post('logout')
   logout() {

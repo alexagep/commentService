@@ -4,42 +4,42 @@ import {
   Matches,
   MinLength,
   IsString,
-  IsNumber,
-  IsOptional,
+  // IsNumber,
+  // IsOptional,
 } from 'class-validator';
-import { UserRoles } from '../../model/userRoles';
-import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { Post } from '../../entities/post.entity';
+// import { UserRoles } from '../../model/userRoles';
+// import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
+// import { Posts } from '../../entities/post.entity';
 
 export class CreateUserDto {
-  id?: number;
+  // id: number;
   @IsNotEmpty()
   @IsString()
   @ApiProperty({ required: true })
   name: string;
 
-  @IsNotEmpty()
-  @IsNumber()
-  @ApiProperty({ required: true })
-  age: number;
+  // @IsNotEmpty()
+  // @IsNumber()
+  // @ApiProperty({ required: true })
+  // age: number;
 
-  @IsNotEmpty()
-  @IsString()
-  @ApiProperty({ required: true })
-  mobile: string;
+  // @IsNotEmpty()
+  // @IsString()
+  // @ApiProperty({ required: true })
+  // mobile: string;
 
-  @IsNotEmpty()
-  @IsString()
-  @ApiProperty()
-  role: UserRoles;
+  // @IsNotEmpty()
+  // @IsString()
+  // @ApiProperty()
+  // role: UserRoles;
 
   @IsNotEmpty()
   @IsString()
   @ApiProperty({ required: true })
   email: string;
 
-  @IsOptional()
-  posts: Post[];
+  // @IsOptional()
+  // posts: Posts[];
 
   @IsNotEmpty()
   @IsString()
@@ -48,9 +48,9 @@ export class CreateUserDto {
   @ApiProperty({ required: true })
   password: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  // @CreateDateColumn()
+  // createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  // @UpdateDateColumn()
+  // updatedAt: Date;
 }

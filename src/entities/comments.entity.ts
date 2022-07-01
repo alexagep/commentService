@@ -5,13 +5,14 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
-  OneToMany,
+  JoinColumn,
+  // OneToMany,
 } from 'typeorm';
-import { User } from './user.entity';
-import { Likes } from './likes.entity';
-import { Posts } from './post.entity';
+import { Users } from './users.entity';
+// import { Likes } from './likes.entity';
+import { Posts } from './posts.entity';
 
-@Entity()
+@Entity('comments')
 export class Comments {
   @PrimaryGeneratedColumn()
   id: number;
@@ -20,30 +21,20 @@ export class Comments {
   @ApiProperty()
   content: string;
 
-  // @Column({ default: null })
-  // @ApiProperty()
-  // userId: number;
-
-  // @Column({ default: null })
-  // @ApiProperty()
-  // postId: number;
-
-  @Column({ default: null })
+  @Column({ default: 0 })
   @ApiProperty()
   likesCount: number;
 
-  @Column({ default: null })
-  @ApiProperty()
-  dislikesCount: number;
-
-  @ManyToOne(() => User, (user) => user.comments)
-  user: User;
+  @ManyToOne(() => Users, (user) => user.comments)
+  @JoinColumn({ referencedColumnName: 'id' })
+  user: Users;
 
   @ManyToOne(() => Posts, (post) => post.comments)
+  @JoinColumn({ referencedColumnName: 'id' })
   post: Posts;
 
-  @OneToMany(() => Likes, (like) => like.comment)
-  likes: Likes[];
+  // @OneToMany(() => Likes, (like) => like.comment)
+  // likes: Likes[];
 
   @Column({ default: null })
   @CreateDateColumn()

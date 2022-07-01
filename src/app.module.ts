@@ -7,11 +7,11 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from './entities/users.entity';
 import { PostModule } from './posts/post.module';
-import { Posts } from './entities/post.entity';
+import { Posts } from './entities/posts.entity';
 import { CommentsModule } from './comments/comments.module';
-import { LikesModule } from './likes/likes.module';
-import { Like } from './entities/likes.entity';
-import { Comment } from './entities/comments.entity';
+// import { LikesModule } from './likes/likes.module';
+// import { Likes } from './entities/likes.entity';
+import { Comments } from './entities/comments.entity';
 
 @Module({
   imports: [
@@ -25,14 +25,16 @@ import { Comment } from './entities/comments.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [Users, Posts, Like, Comment],
+      entities: [Users, Posts, Comments],
+      // entities: [Users, Posts, Likes, Comments],
+
       synchronize: true,
     }),
     UsersModule,
     AuthModule,
     PostModule,
     CommentsModule,
-    LikesModule,
+    // LikesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

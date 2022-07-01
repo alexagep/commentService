@@ -8,7 +8,7 @@ import { REQUEST } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ReqResponse } from '../schemas/response';
 import { Repository } from 'typeorm';
-import { Posts } from '../entities/post.entity';
+import { Posts } from '../entities/posts.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { Request } from 'express';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -22,15 +22,31 @@ export class PostService {
     private readonly request: Request,
   ) {}
 
-  async findPosts(): Promise<Posts[]> {
-    const post = await this.postRepository.find();
-    return post;
+  async findPosts(id: number): Promise<Posts[]> {
+    // const post = await this.postRepository.find();
+    const result = await this.postRepository.find({
+      relations: ['comments', 'users'],
+      where: { id: id },
+    });
+    return result;
   }
 
   async createPost(post: CreatePostDto): Promise<ReqResponse> {
     delete post.senderId;
-    post.senderId = this.request.user.id;
-    await this.postRepository.save(post);
+    const user: any = this.request.user;
+    post.senderId = user.id;
+
+    await this.postRepository
+      .createQueryBuilder()
+      .insert()
+      .into(Posts)
+      .values({
+        content: post.content,
+        user: user.id,
+      })
+      .execute();
+
+    // await this.postRepository.save(post);
     const resp: ReqResponse = {
       status: 201,
       success: true,

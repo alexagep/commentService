@@ -9,7 +9,7 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('Crud using NestJS + JWT + MySql + TypeORM')
+    .setTitle('Crud using NestJS + JWT + pg + TypeORM')
     .setDescription('The NestJS API')
     .setVersion('1.0')
     .addTag('nestjs')

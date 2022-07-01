@@ -10,6 +10,8 @@ import { Users } from '../entities/users.entity';
 import { REQUEST } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { UpdatePassDto } from './dto/update-pass.dto';
+import { ReqResponse } from '../schemas/response';
+import { AuthRegisterDto } from './dto/auth-register.dto';
 
 @Injectable()
 export class AuthService {
@@ -33,9 +35,9 @@ export class AuthService {
     if (user) {
       const collectUser = await this.usersService.findUserByEmail(email);
       const payload = {
-        email,
-        password,
-        id: collectUser.id
+        // email,
+        // password,
+        id: collectUser.id,
       };
       Logger.log('payload_****************', payload);
 
@@ -49,15 +51,12 @@ export class AuthService {
 
   async updatePassword(id: number, data: UpdatePassDto): Promise<Users> {
     const user = this.request.user;
-    Logger.log('typeof_user_****************', typeof user.id, typeof id);
     if (user.id === id && data.password === data.rePassword) {
-      //  if (data.password === data.rePassword) {
       return await this.usersService.updatePassword(id, data);
     } else {
       Logger.error(user);
       throw new UnauthorizedException();
     }
-    // return await this.usersService.updatePassword(id, data);
   }
 
   async validateUser(authLoginDto: AuthLoginDto): Promise<Users> {
@@ -74,18 +73,26 @@ export class AuthService {
 
   async login___(authLoginDto: AuthLoginDto): Promise<any> {
     const { email, password } = authLoginDto;
-    Logger.log(
-      '**************',
-      authLoginDto.email,
-      '*************',
-      authLoginDto.password,
-    );
     const collectUser = await this.usersService.findUserByEmail(email);
     const payload = { email, password, id: collectUser.id };
-    Logger.log('payload_****************', payload);
 
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async createUser(user: AuthRegisterDto): Promise<ReqResponse> {
+    return await this.usersService.createUser(user);
+    // const newPassword = await this.hashPassword(user.password);
+    // user.password = newPassword;
+    // Logger.log('*****************************************');
+    // await this.userRepository.save(user);
+    // const resp: ReqResponse = {
+    //   status: 201,
+    //   success: true,
+    //   message: 'User created successfully',
+    //   error: false,
+    // };
+    // return resp;
   }
 }

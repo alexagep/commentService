@@ -5,7 +5,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Post,
+  // Post,
   Put,
   UseGuards,
   UseInterceptors,
@@ -42,24 +42,18 @@ export class UsersController {
     return await this.usersService.findAll();
   }
 
-  @ApiBearerAuth('access-token') //edit here
+  @ApiBearerAuth('access-token')
   @ApiOkResponse({
     type: CreateUserDto,
     isArray: false,
     description: 'Get An User',
   })
   @Get(':id')
-  async getUserById(@Param('id', ParseIntPipe) id: number): Promise<Users> {
+  async getUserById(@Param('id', ParseIntPipe) id: number) {
     return await this.usersService.findOneById(id);
   }
 
-  @ApiCreatedResponse({ type: CreateUserDto, description: 'Create An User' })
-  @Post()
-  async createUser(@Body() user: Users): Promise<ReqResponse> {
-    return await this.usersService.createUser(user);
-  }
-
-  @ApiBearerAuth('access-token') //edit here
+  @ApiBearerAuth('access-token')
   @ApiCreatedResponse({ type: CreateUserDto, description: 'Update An User' })
   @ApiNotFoundResponse()
   @Put(':id')
@@ -70,7 +64,7 @@ export class UsersController {
     return await this.usersService.updateUser(id, user);
   }
 
-  @ApiBearerAuth('access-token') //edit here
+  @ApiBearerAuth('access-token')
   @ApiCreatedResponse({ type: CreateUserDto, description: 'Delete An User' })
   @Delete(':id')
   async deleteUser(

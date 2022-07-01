@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { UserRoles } from '../model/userRoles';
+// import { UserRoles } from '../model/userRoles';
 import {
   Entity,
   Column,
@@ -8,24 +8,18 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { Post } from './post.entity';
+import { Posts } from './posts.entity';
+// import { Likes } from './likes.entity';
+import { Comments } from './comments.entity';
 
-@Entity()
+@Entity('users')
 export class Users {
   @PrimaryGeneratedColumn()
-  id?: number;
+  id: number;
 
   @Column({ default: null })
   @ApiProperty()
   name: string;
-
-  @Column({ unique: true, default: null })
-  @ApiProperty()
-  mobile: string;
-
-  @Column({ type: 'enum', enum: UserRoles, default: UserRoles.user })
-  @ApiProperty()
-  role: UserRoles;
 
   @Column({ unique: true, default: null })
   @ApiProperty()
@@ -35,12 +29,14 @@ export class Users {
   @ApiProperty()
   password: string;
 
-  @Column({ default: null })
-  @ApiProperty()
-  age: number;
+  @OneToMany(() => Posts, (post) => post.user)
+  posts: Posts[];
 
-  @OneToMany(() => Post, (post) => post.author)
-  posts: Post[];
+  // @OneToMany(() => Likes, (like) => like.user)
+  // likes: Likes[];
+
+  @OneToMany(() => Comments, (comment) => comment.user)
+  comments: Comments[];
 
   @Column({ default: null })
   @CreateDateColumn()

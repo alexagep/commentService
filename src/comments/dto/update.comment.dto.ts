@@ -1,4 +1,4 @@
 export enum CommentStatus {
-  INCREASED = 'increase',
-  DECREASED = 'decrease',
+  LIKE = 'like',
+  DISLIKE = 'dislike',
 }
