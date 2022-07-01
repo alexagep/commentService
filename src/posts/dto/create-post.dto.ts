@@ -7,5 +7,5 @@ export class CreatePostDto {
   @ApiProperty()
   content: string;
 
-  senderId?: number;
+  // senderId?: number;
 }

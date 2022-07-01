@@ -2,15 +2,15 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { UsersModule } from './users/users.module';
+// import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Users } from './entities/users.entity';
+// import { Users } from './entities/users.entity';
 import { PostModule } from './posts/post.module';
 import { Posts } from './entities/posts.entity';
 import { CommentsModule } from './comments/comments.module';
-// import { LikesModule } from './likes/likes.module';
-// import { Likes } from './entities/likes.entity';
+import { LikesModule } from './likes/likes.module';
+import { Likes } from './entities/likes.entity';
 import { Comments } from './entities/comments.entity';
 
 @Module({
@@ -25,16 +25,16 @@ import { Comments } from './entities/comments.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [Users, Posts, Comments],
+      entities: [Posts, Comments, Likes],
       // entities: [Users, Posts, Likes, Comments],
 
       synchronize: true,
     }),
-    UsersModule,
+    // UsersModule,
     AuthModule,
     PostModule,
     CommentsModule,
-    // LikesModule,
+    LikesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -19,7 +19,7 @@ import {
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostService } from './post.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { Posts } from '../entities/posts.entity';
+// import { Posts } from '../entities/posts.entity';
 import { ReqResponse } from '../schemas/response';
 import { UpdatePostDto } from './dto/update-post.dto';
 
@@ -43,7 +43,7 @@ export class PostController {
     description: 'Get An User',
   })
   @Get(':id')
-  async getPosts(@Param('id', ParseIntPipe) id: number): Promise<Posts[]> {
+  async getPosts(@Param('id', ParseIntPipe) id: number) {
     return await this.postService.findPosts(id);
   }
 

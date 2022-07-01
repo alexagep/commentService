@@ -24,14 +24,34 @@ export class CommentsService {
   ) {}
 
   // find comments by post id
-  // async findComments(id: number): Promise<Comments[]> {
-  //   const comment = await this.commentRepository.find({
-  //     where: {
-  //       // postId: id,
-  //     },
-  //   });
-  //   return comment;
-  // }
+  async findComments(id: number) {
+    const pageIndex = 1;
+    const pageSize = 10;
+    const limit = 10;
+
+    const result = this.commentRepository
+      .createQueryBuilder('comments')
+      .select([
+        // 'posts.id',
+        // 'posts.content',
+        // 'posts.postedAt',
+        'comments.id',
+        'comments.content',
+        'comments.postedAt',
+        'comments.userId',
+        'comments.likesCount',
+      ])
+      // .from(Users, 'users')
+      .leftJoin('comments.post', 'posts')
+      .where('posts.id = :id', { id: id })
+      .skip((pageIndex - 1) * pageSize)
+      .take(10)
+      .orderBy('comments.postedAt', 'DESC')
+      // .where('users.id = :id', { id: id })
+      .limit(limit)
+      .getManyAndCount();
+    return result;
+  }
 
   //find comment by id
   async findComment(id: number): Promise<Comments> {
@@ -48,7 +68,7 @@ export class CommentsService {
       .into(Comments)
       .values({
         content: comment.content,
-        user: user.id,
+        senderId: user.id,
         post: () => comment.postId.toString(),
       })
       .execute();

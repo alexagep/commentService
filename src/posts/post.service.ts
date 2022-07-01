@@ -22,19 +22,42 @@ export class PostService {
     private readonly request: Request,
   ) {}
 
-  async findPosts(id: number): Promise<Posts[]> {
+  async findPosts(id: number) {
     // const post = await this.postRepository.find();
-    const result = await this.postRepository.find({
-      relations: ['comments', 'users'],
-      where: { id: id },
-    });
+    // const result = await this.postRepository.find({
+    //   relations: ['comments', 'users'],
+    //   where: { id: id },
+    // });
+    const result = this.postRepository
+      .createQueryBuilder('posts')
+      .select([
+        'posts.id',
+        'posts.content',
+        'posts.postedAt',
+        'comments.id',
+        'comments.content',
+        'comments.postedAt',
+        'comments.userId',
+        'comments.likesCount',
+      ])
+      // .from(Users, 'users')
+      .leftJoin('posts.comments', 'comments')
+      .where('posts.id = :id', { id: id })
+      // .skip((page - 1) * pageSize).take(pageSize)
+      //   .orderBy('posts.postedAt', 'DESC')
+      //   .where('users.id = :id', { id: id })
+      //   .limit(10)
+      .getManyAndCount();
+
     return result;
   }
 
   async createPost(post: CreatePostDto): Promise<ReqResponse> {
-    delete post.senderId;
+    // delete post.senderId;
     const user: any = this.request.user;
-    post.senderId = user.id;
+    // post.senderId = user.id;
+    console.log(user);
+    
 
     await this.postRepository
       .createQueryBuilder()
@@ -42,7 +65,7 @@ export class PostService {
       .into(Posts)
       .values({
         content: post.content,
-        user: user.id,
+        senderId: user.id,
       })
       .execute();
 

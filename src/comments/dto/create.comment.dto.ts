@@ -8,14 +8,8 @@ export class CreateCommentDto {
   @ApiProperty()
   content: string;
 
-  // @ApiProperty()
-  // userId?: number;
-
   @IsNotEmpty()
   @IsNumber()
   @ApiProperty()
   postId: number;
-
-  // @CreateDateColumn()
-  // postedAt: Date;
 }

@@ -2,7 +2,7 @@ import {
   Body,
   Controller,
   Delete,
-  // Get,
+  Get,
   Param,
   ParseIntPipe,
   Post,
@@ -13,7 +13,7 @@ import {
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
-  // ApiOkResponse,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 import { CreateCommentDto } from './dto/create.comment.dto';
 import { CommentsService } from './comments.service';
@@ -27,15 +27,15 @@ import { CommentStatus } from './dto/update.comment.dto';
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
-  // @ApiBearerAuth('access-token')
-  // @ApiOkResponse({
-  //   isArray: false,
-  //   description: 'Get An Comment',
-  // })
-  // @Get(':id')
-  // async find(@Param('id', ParseIntPipe) postId: number): Promise<Comments[]> {
-  //   return await this.commentsService.findComments(postId);
-  // }
+  @ApiBearerAuth('access-token')
+  @ApiOkResponse({
+    isArray: false,
+    description: 'Get An Comment',
+  })
+  @Get(':id')
+  async find(@Param('id', ParseIntPipe) postId: number) {
+    return await this.commentsService.findComments(postId);
+  }
 
   @ApiBearerAuth('access-token')
   @ApiCreatedResponse({

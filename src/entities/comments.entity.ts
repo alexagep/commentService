@@ -6,10 +6,9 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
-  // OneToMany,
+  OneToMany,
 } from 'typeorm';
-import { Users } from './users.entity';
-// import { Likes } from './likes.entity';
+import { Likes } from './likes.entity';
 import { Posts } from './posts.entity';
 
 @Entity('comments')
@@ -25,16 +24,23 @@ export class Comments {
   @ApiProperty()
   likesCount: number;
 
-  @ManyToOne(() => Users, (user) => user.comments)
-  @JoinColumn({ referencedColumnName: 'id' })
-  user: Users;
+  @Column({ default: null })
+  @ApiProperty()
+  senderId: number;
+
+  @Column({ nullable: false })
+  @ApiProperty()
+  postId: number;
 
   @ManyToOne(() => Posts, (post) => post.comments)
-  @JoinColumn({ referencedColumnName: 'id' })
+  @JoinColumn({ name: 'postId' })
   post: Posts;
 
-  // @OneToMany(() => Likes, (like) => like.comment)
-  // likes: Likes[];
+  @OneToMany(() => Likes, (like) => like.comment)
+  likes: Likes[];
+
+  // @OneToMany(() => Comments, (comment) => comment.post)
+  // comments: Comments[];
 
   @Column({ default: null })
   @CreateDateColumn()
