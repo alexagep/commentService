@@ -18,9 +18,9 @@ import {
 import { CreateCommentDto } from './dto/create.comment.dto';
 import { CommentsService } from './comments.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-// import { Comments } from '../entities/comments.entity';
 import { ReqResponse } from '../schemas/response';
 import { CommentStatus } from './dto/update.comment.dto';
+import { PagingDto } from './dto/paging.comment.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('comments')
@@ -33,8 +33,11 @@ export class CommentsController {
     description: 'Get An Comment',
   })
   @Get(':id')
-  async find(@Param('id', ParseIntPipe) postId: number) {
-    return await this.commentsService.findComments(postId);
+  async find(
+    @Param('id', ParseIntPipe) postId: number,
+    @Body() data: PagingDto,
+  ) {
+    return await this.commentsService.findComments(postId, data);
   }
 
   @ApiBearerAuth('access-token')

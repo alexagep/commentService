@@ -18,6 +18,7 @@ import { CommentStatus } from './dto/update.comment.dto';
 import { LikesService } from '../likes/likes.service';
 import { Likes } from '../entities/likes.entity';
 import { Posts } from '../entities/posts.entity';
+import { PagingDto } from './dto/paging.comment.dto';
 // import { getManager } from 'typeorm';
 
 @Injectable()
@@ -32,10 +33,10 @@ export class CommentsService {
   ) {}
 
   // find comments by post id
-  async findComments(id: number) {
-    const pageIndex = 1;
-    const pageSize = 10;
-    const limit = 10;
+  async findComments(id: number, data: PagingDto) {
+    const pageIndex = data.pageIndex;
+    const pageSize = data.pageSize;
+    const limit = data.limit;
     const user: any = this.request.user;
     const userId = user.id;
 
@@ -47,24 +48,20 @@ export class CommentsService {
         'comments.postedAt',
         'comments.senderId',
         'comments.likesCount',
-        // 'likes.hasLiked',
+        'posts.id',
+        'likes.hasLiked',
       ])
       .leftJoin(Posts, 'posts', 'comments.postId = posts.id')
-      // .innerJoin(Likes, 'likes', 'comments.id = likes.commentId')
+      .innerJoin(Likes, 'likes', 'comments.id = likes.commentId')
       .where('posts.id = :id', { id: id })
-      // .andWhere(`likes.senderId = ${userId}`)
-      // .andWhere(`likes.hasLiked = ${true}`)
-      // .skip((pageIndex - 1) * pageSize)
-      // .take(10)
-      // .orderBy('comments.postedAt', 'DESC')
-      // .limit(limit)
+      .andWhere(`likes.senderId = ${userId}`)
+      .andWhere(`likes.hasLiked = ${true}`)
+      .skip((pageIndex - 1) * pageSize)
+      .take(10)
+      .orderBy('comments.postedAt', 'DESC')
+      .limit(limit)
       .getManyAndCount();
-    // const rawData = await entityManager.query(`SELECT * FROM USERS`);
 
-    // const likeHistory = await this.commentIsLikedByUser(result[0].commentId);
-    // if (likeHistory == true) {
-    //   result[0].likedByUser = true;
-    // }
     return result;
   }
 
