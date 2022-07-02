@@ -32,7 +32,7 @@ export class CommentsController {
     isArray: false,
     description: 'Get An Comment',
   })
-  @Get(':id')
+  @Post(':id')
   async find(
     @Param('id', ParseIntPipe) postId: number,
     @Body() data: PagingDto,

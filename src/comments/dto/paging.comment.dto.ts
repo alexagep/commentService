@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber } from 'class-validator';
 
 export class PagingDto {
-  @IsString()
+  @IsNumber()
   @ApiProperty()
   pageIndex: number;
 

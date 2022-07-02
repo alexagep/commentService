@@ -25,7 +25,7 @@ export class LikesService {
     private readonly likeRepository: Repository<Likes>,
     @Inject(REQUEST)
     private readonly request: Request,
-  ) { }
+  ) {}
 
   async findLikes(commentId: number, userId: number): Promise<Likes[]> {
     const like = await this.likeRepository.find({
@@ -49,7 +49,6 @@ export class LikesService {
       if (data.like) {
         hasLiked = true;
         await this.updateLikeCount(data.commentId, CommentStatus.LIKE);
-
       } else if (data.dislike) {
         await this.updateLikeCount(data.commentId, CommentStatus.DISLIKE);
         hasDisliked = true;

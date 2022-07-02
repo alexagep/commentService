@@ -50,12 +50,26 @@ export class CommentsService {
         'comments.likesCount',
         'posts.id',
         'likes.hasLiked',
+        'likes.hasDisliked',
       ])
+
+      // .innerJoinAndSelect
       .leftJoin(Posts, 'posts', 'comments.postId = posts.id')
+      // .leftJoinAndSelect(
+      //   (subQuery) =>
+      //     subQuery
+      //       .subQuery()
+      //       .createQueryBuilder()
+      //       .select(['likes.hasLiked', 'likes.hasDisliked'])
+      //       .leftJoin('likes.comments', 'comments')
+      //       .from(Likes, 'likes'),
+      //   'like',
+      //   'comments.id = likes.commentId',
+      // )
       .innerJoin(Likes, 'likes', 'comments.id = likes.commentId')
       .where('posts.id = :id', { id: id })
       .andWhere(`likes.senderId = ${userId}`)
-      .andWhere(`likes.hasLiked = ${true}`)
+      .andWhere('likes.hasLiked = true')
       .skip((pageIndex - 1) * pageSize)
       .take(10)
       .orderBy('comments.postedAt', 'DESC')
