@@ -3,12 +3,9 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-// import { Users } from './users.entity';
 import { Comments } from './comments.entity';
 
 @Entity('likes')
@@ -24,22 +21,15 @@ export class Likes {
   @ApiProperty()
   hasDisliked: boolean;
 
-  @Column({ nullable: false })
+  @Column()
   @ApiProperty()
   senderId: number;
 
-  @Column({ nullable: false })
+  @Column()
   @ApiProperty()
   commentId: number;
 
   @ManyToOne(() => Comments, (comment) => comment.likes)
   @JoinColumn({ name: 'commentId' })
   comment: Comments;
-
-  // @ManyToOne(() => Users, (user) => user.posts)
-  // @JoinColumn({ referencedColumnName: 'id' })
-  // user: Users;
-
-  // @OneToMany(() => Comments, (comment) => comment.post)
-  // comments: Comments[];
 }

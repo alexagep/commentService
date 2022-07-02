@@ -3,11 +3,11 @@ import {
   Inject,
   Injectable,
   NotFoundException,
-  OnModuleInit,
-  Scope,
+  // OnModuleInit,
+  // Scope,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ModuleRef, REQUEST } from '@nestjs/core';
+import { REQUEST } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ReqResponse } from '../schemas/response';
 import { Repository } from 'typeorm';
@@ -18,6 +18,7 @@ import { CommentStatus } from './dto/update.comment.dto';
 import { LikesService } from '../likes/likes.service';
 import { Likes } from '../entities/likes.entity';
 import { Posts } from '../entities/posts.entity';
+// import { getManager } from 'typeorm';
 
 @Injectable()
 export class CommentsService {
@@ -46,18 +47,19 @@ export class CommentsService {
         'comments.postedAt',
         'comments.senderId',
         'comments.likesCount',
-        'likes.hasLiked',
+        // 'likes.hasLiked',
       ])
       .leftJoin(Posts, 'posts', 'comments.postId = posts.id')
-      .innerJoin(Likes, 'likes', 'comments.id = likes.commentId')
+      // .innerJoin(Likes, 'likes', 'comments.id = likes.commentId')
       .where('posts.id = :id', { id: id })
-      .andWhere(`likes.senderId = ${userId}`)
-      .andWhere(`likes.hasLiked = ${true}`)
-      .skip((pageIndex - 1) * pageSize)
-      .take(10)
-      .orderBy('comments.postedAt', 'DESC')
-      .limit(limit)
+      // .andWhere(`likes.senderId = ${userId}`)
+      // .andWhere(`likes.hasLiked = ${true}`)
+      // .skip((pageIndex - 1) * pageSize)
+      // .take(10)
+      // .orderBy('comments.postedAt', 'DESC')
+      // .limit(limit)
       .getManyAndCount();
+    // const rawData = await entityManager.query(`SELECT * FROM USERS`);
 
     // const likeHistory = await this.commentIsLikedByUser(result[0].commentId);
     // if (likeHistory == true) {
@@ -88,7 +90,7 @@ export class CommentsService {
       .values({
         content: comment.content,
         senderId: user.id,
-        post: () => comment.postId.toString(),
+        postId: comment.postId,
       })
       .execute();
 

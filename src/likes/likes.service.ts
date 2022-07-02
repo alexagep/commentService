@@ -25,7 +25,7 @@ export class LikesService {
     private readonly likeRepository: Repository<Likes>,
     @Inject(REQUEST)
     private readonly request: Request,
-  ) {}
+  ) { }
 
   async findLikes(commentId: number, userId: number): Promise<Likes[]> {
     const like = await this.likeRepository.find({
@@ -39,17 +39,29 @@ export class LikesService {
       throw new BadRequestException('Like and Dislike cannot be same');
     }
     const user: any = this.request.user;
-
     const likeHistory = await this.findLikes(data.commentId, user.id);
+
     if (likeHistory.length == 0) {
+      const likedHistory = [];
+      let hasLiked = false;
+      let hasDisliked = false;
+
       if (data.like) {
+        hasLiked = true;
         await this.updateLikeCount(data.commentId, CommentStatus.LIKE);
-        likeHistory[0].hasLiked = true;
+
       } else if (data.dislike) {
         await this.updateLikeCount(data.commentId, CommentStatus.DISLIKE);
-        likeHistory[0].hasDisliked = true;
+        hasDisliked = true;
       }
-      return await this.saveLikeRepo(likeHistory[0]);
+
+      likedHistory.push({
+        hasLiked: hasLiked,
+        hasDisliked: hasDisliked,
+        senderId: user.id,
+        commentId: data.commentId,
+      });
+      return await this.saveLikeRepo(likedHistory[0]);
     } else {
       if (
         (likeHistory.length > 0 && likeHistory[0].hasLiked === data.like) ||
@@ -109,13 +121,14 @@ export class LikesService {
     };
   }
 
-  async saveLikeRepo(data) {
+  async saveLikeRepo(data: any) {
     await this.likeRepository.save({
-      senderId: data.id,
+      senderId: data.senderId,
       commentId: data.commentId,
       hasDisliked: data.hasDisliked,
       hasLiked: data.hasLiked,
     });
+
     return {
       status: 200,
       success: true,
