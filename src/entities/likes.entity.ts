@@ -5,11 +5,12 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  BaseEntity,
 } from 'typeorm';
 import { Comments } from './comments.entity';
 
 @Entity('likes')
-export class Likes {
+export class Likes extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -21,15 +22,17 @@ export class Likes {
   @ApiProperty()
   hasDisliked: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   @ApiProperty()
   senderId: number;
 
-  @Column()
+  @Column({ nullable: true })
   @ApiProperty()
   commentId: number;
 
-  @ManyToOne(() => Comments, (comment) => comment.likes)
+  @ManyToOne(() => Comments, (comment) => comment.likes, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'commentId' })
   comment: Comments;
 }

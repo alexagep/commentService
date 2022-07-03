@@ -3,8 +3,6 @@ import {
   Inject,
   Injectable,
   NotFoundException,
-  // OnModuleInit,
-  // Scope,
   UnauthorizedException,
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
@@ -16,14 +14,14 @@ import { CreateCommentDto } from './dto/create.comment.dto';
 import { Request } from 'express';
 import { CommentStatus } from './dto/update.comment.dto';
 import { LikesService } from '../likes/likes.service';
-import { Likes } from '../entities/likes.entity';
-import { Posts } from '../entities/posts.entity';
 import { PagingDto } from './dto/paging.comment.dto';
-// import { getManager } from 'typeorm';
+import { PostService } from '../posts/post.service';
+import { resComment } from './dto/response.comment.dto';
 
 @Injectable()
 export class CommentsService {
   constructor(
+    private postService: PostService,
     @Inject(forwardRef(() => LikesService))
     private likeService: LikesService,
     @InjectRepository(Comments)
@@ -33,56 +31,43 @@ export class CommentsService {
   ) {}
 
   // find comments by post id
-  async findComments(id: number, data: PagingDto) {
+  async findComments(postId: number, data: PagingDto) {
     const pageIndex = data.pageIndex;
     const pageSize = data.pageSize;
     const limit = data.limit;
     const user: any = this.request.user;
     const userId = user.id;
 
-    const result = this.commentRepository
-      .createQueryBuilder('comments')
-      .select([
-        'comments.id',
-        'comments.content',
-        'comments.postedAt',
-        'comments.senderId',
-        'comments.likesCount',
-        'posts.id',
-        'likes.hasLiked',
-        'likes.hasDisliked',
-      ])
+    const post = await this.postService.findPostById(postId);
+    if (post) {
+      const result = await this.commentRepository
+        .createQueryBuilder('comments')
+        .select([
+          'comments.id',
+          'comments.content',
+          'comments.postedAt',
+          'comments.senderId',
+          'comments.likesCount',
+        ])
+        .where('comments.postId = :postId', { postId })
+        .skip((pageIndex - 1) * pageSize)
+        .take(10)
+        .orderBy('comments.postedAt', 'DESC')
+        .limit(limit)
+        .getMany();
 
-      // .innerJoinAndSelect
-      .leftJoin(Posts, 'posts', 'comments.postId = posts.id')
-      // .leftJoinAndSelect(
-      //   (subQuery) =>
-      //     subQuery
-      //       .subQuery()
-      //       .createQueryBuilder()
-      //       .select(['likes.hasLiked', 'likes.hasDisliked'])
-      //       .leftJoin('likes.comments', 'comments')
-      //       .from(Likes, 'likes'),
-      //   'like',
-      //   'comments.id = likes.commentId',
-      // )
-      .innerJoin(Likes, 'likes', 'comments.id = likes.commentId')
-      .where('posts.id = :id', { id: id })
-      .andWhere(`likes.senderId = ${userId}`)
-      .andWhere('likes.hasLiked = true')
-      .skip((pageIndex - 1) * pageSize)
-      .take(10)
-      .orderBy('comments.postedAt', 'DESC')
-      .limit(limit)
-      .getManyAndCount();
-
-    return result;
+      if (result.length > 0) {
+        return await this.commentIsLikedByUser(result, userId);
+      } else {
+        throw new NotFoundException('this post has no post yet')
+      }
+    } else {
+      throw new NotFoundException('post not found');
+    }
   }
 
-  async commentIsLikedByUser(commentId: number) {
-    const user: any = this.request.user;
-    const userId = user.id;
-    return this.likeService.recognizeCommentIsLiked(userId, commentId);
+  async commentIsLikedByUser(comments: Array<resComment>, userId: number) {
+    return this.likeService.recognizeCommentIsLiked(userId, comments);
   }
 
   //find comment by id
@@ -94,24 +79,29 @@ export class CommentsService {
   async createComment(comment: CreateCommentDto): Promise<ReqResponse> {
     const user: any = this.request.user;
 
-    await this.commentRepository
-      .createQueryBuilder()
-      .insert()
-      .into(Comments)
-      .values({
-        content: comment.content,
-        senderId: user.id,
-        postId: comment.postId,
-      })
-      .execute();
+    const post = await this.postService.findPostById(comment.postId);
+    if (post) {
+      await this.commentRepository
+        .createQueryBuilder()
+        .insert()
+        .into(Comments)
+        .values({
+          content: comment.content,
+          senderId: user.id,
+          postId: comment.postId,
+        })
+        .execute();
 
-    const resp: ReqResponse = {
-      status: 201,
-      success: true,
-      message: 'Comment created successfully',
-      error: false,
-    };
-    return resp;
+      const resp: ReqResponse = {
+        status: 201,
+        success: true,
+        message: 'Comment created successfully',
+        error: false,
+      };
+      return resp;
+    } else {
+      throw new NotFoundException('post not found');
+    }
   }
 
   async deleteComment(id: number): Promise<ReqResponse> {

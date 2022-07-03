@@ -14,11 +14,11 @@ import { CreateLikeDto } from './dto/create.like.dto';
 import { Request } from 'express';
 import { CommentsService } from '../comments/comments.service';
 import { CommentStatus } from '../comments/dto/update.comment.dto';
+import { resComment } from '../comments/dto/response.comment.dto';
 
 @Injectable()
 export class LikesService {
   constructor(
-    // private readonly commentsService: CommentsService,
     @Inject(forwardRef(() => CommentsService))
     private commentsService: CommentsService,
     @InjectRepository(Likes)
@@ -182,14 +182,26 @@ export class LikesService {
     }
   }
 
-  async recognizeCommentIsLiked(senderId: number, commentId: number) {
-    const result = await this.likeRepository.find({
-      where: { senderId, commentId, hasLiked: true },
-    });
-    if (result.length == 0) {
-      return false;
+  async recognizeCommentIsLiked(senderId: number, comments: Array<resComment>) {
+    const collect = [];
+
+    for (const comment of comments) {
+      const result = await this.likeRepository.find({
+        where: { senderId, commentId: comment.id },
+      });
+      if (result[0]) {
+        collect.push({
+          ...comment,
+          hasLikedByUser: true,
+        });
+      } else {
+        collect.push({
+          ...comment,
+          hasLikedByUser: false,
+        });
+      }
     }
-    return true;
+    return collect;
   }
 
   async validateUser(id: number): Promise<boolean> {

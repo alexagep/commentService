@@ -4,12 +4,13 @@ import { CommentsController } from './comments.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Comments } from '../entities/comments.entity';
 import { LikesModule } from '../likes/likes.module';
+import { PostModule } from '../posts/post.module';
 
 @Module({
   imports: [
     forwardRef(() => LikesModule),
     TypeOrmModule.forFeature([Comments]),
-    // LikesModule
+    PostModule,
   ],
   providers: [CommentsService],
   controllers: [CommentsController],
