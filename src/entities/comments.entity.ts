@@ -7,16 +7,17 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  BaseEntity,
 } from 'typeorm';
 import { Likes } from './likes.entity';
 import { Posts } from './posts.entity';
 
 @Entity('comments')
-export class Comments {
+export class Comments extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ default: null })
+  @Column({ nullable: false })
   @ApiProperty()
   content: string;
 
@@ -24,7 +25,7 @@ export class Comments {
   @ApiProperty()
   likesCount: number;
 
-  @Column({ default: null })
+  @Column({ nullable: false })
   @ApiProperty()
   senderId: number;
 
@@ -32,15 +33,14 @@ export class Comments {
   @ApiProperty()
   postId: number;
 
-  @ManyToOne(() => Posts, (post) => post.comments)
+  @ManyToOne(() => Posts, (post) => post.comments, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'postId' })
   post: Posts;
 
   @OneToMany(() => Likes, (like) => like.comment)
   likes: Likes[];
-
-  // @OneToMany(() => Comments, (comment) => comment.post)
-  // comments: Comments[];
 
   @Column({ default: null })
   @CreateDateColumn()

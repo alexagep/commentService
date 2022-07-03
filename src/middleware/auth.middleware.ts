@@ -11,7 +11,6 @@ import { Request, Response, NextFunction } from 'express';
 export class ValidUserMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     const { email, password } = req.body;
-    // const id
     Logger.log('*******MIDDLEWARE**********', req.body);
     if (email && password) {
       next();

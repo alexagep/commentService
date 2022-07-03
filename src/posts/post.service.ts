@@ -1,6 +1,7 @@
 import {
   Inject,
   Injectable,
+  NotFoundException,
   Scope,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -23,11 +24,6 @@ export class PostService {
   ) {}
 
   async findPosts(id: number) {
-    // const post = await this.postRepository.find();
-    // const result = await this.postRepository.find({
-    //   relations: ['comments', 'users'],
-    //   where: { id: id },
-    // });
     const result = this.postRepository
       .createQueryBuilder('posts')
       .select([
@@ -40,24 +36,15 @@ export class PostService {
         'comments.userId',
         'comments.likesCount',
       ])
-      // .from(Users, 'users')
       .leftJoin('posts.comments', 'comments')
       .where('posts.id = :id', { id: id })
-      // .skip((page - 1) * pageSize).take(pageSize)
-      //   .orderBy('posts.postedAt', 'DESC')
-      //   .where('users.id = :id', { id: id })
-      //   .limit(10)
       .getManyAndCount();
 
     return result;
   }
 
   async createPost(post: CreatePostDto): Promise<ReqResponse> {
-    // delete post.senderId;
     const user: any = this.request.user;
-    // post.senderId = user.id;
-    console.log(user);
-    
 
     await this.postRepository
       .createQueryBuilder()
@@ -69,7 +56,6 @@ export class PostService {
       })
       .execute();
 
-    // await this.postRepository.save(post);
     const resp: ReqResponse = {
       status: 201,
       success: true,
@@ -110,6 +96,10 @@ export class PostService {
     } else {
       throw new UnauthorizedException();
     }
+  }
+
+  async findPostById(id: number) {
+    return await this.postRepository.findOne({ where: { id } });
   }
 
   async validateUser(id: number): Promise<any> {

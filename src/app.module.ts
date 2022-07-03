@@ -2,10 +2,8 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-// import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-// import { Users } from './entities/users.entity';
 import { PostModule } from './posts/post.module';
 import { Posts } from './entities/posts.entity';
 import { CommentsModule } from './comments/comments.module';
@@ -26,11 +24,9 @@ import { Comments } from './entities/comments.entity';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [Posts, Comments, Likes],
-      // entities: [Users, Posts, Likes, Comments],
 
       synchronize: true,
     }),
-    // UsersModule,
     AuthModule,
     PostModule,
     CommentsModule,

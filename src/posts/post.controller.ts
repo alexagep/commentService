@@ -19,7 +19,6 @@ import {
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostService } from './post.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-// import { Posts } from '../entities/posts.entity';
 import { ReqResponse } from '../schemas/response';
 import { UpdatePostDto } from './dto/update-post.dto';
 
@@ -27,16 +26,6 @@ import { UpdatePostDto } from './dto/update-post.dto';
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
-
-  // @ApiOkResponse({
-  //   type: CreatePostDto,
-  //   isArray: true,
-  //   description: 'Get All Users',
-  // })
-  // @Get()
-  // async getUsers(): Promise<Posts[]> {
-  //   return await this.postService.findAll();
-  // }
 
   @ApiOkResponse({
     isArray: false,

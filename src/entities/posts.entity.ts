@@ -4,29 +4,23 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  // ManyToOne,
-  // JoinColumn,
   OneToMany,
+  BaseEntity,
 } from 'typeorm';
 import { Comments } from './comments.entity';
-// import { Users } from './users.entity';
 
 @Entity('posts')
-export class Posts {
+export class Posts extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ default: null })
+  @Column({ nullable: true })
   @ApiProperty()
   content: string;
 
-  @Column({ default: null })
+  @Column({ nullable: true })
   @ApiProperty()
   senderId: number;
-
-  // @ManyToOne(() => Users, (user) => user.posts)
-  // @JoinColumn({ referencedColumnName: 'id' })
-  // user: Users;
 
   @OneToMany(() => Comments, (comment) => comment.post)
   comments: Comments[];

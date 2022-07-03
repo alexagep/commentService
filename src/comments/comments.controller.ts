@@ -57,10 +57,7 @@ export class CommentsController {
   async delete(@Param('id', ParseIntPipe) id: number): Promise<ReqResponse> {
     return await this.commentsService.deleteComment(id);
   }
-
-  // @ApiBearerAuth('access-token')
-  // @ApiCreatedResponse({ description: 'Delete A Comment' })
-
+  
   //update likesCount or dislikesCount of  a comment
   @ApiBearerAuth('access-token')
   @ApiCreatedResponse({ description: 'Update A Comment' })
