@@ -2,11 +2,9 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
   Param,
   ParseIntPipe,
   Post,
-  Put,
   UseGuards,
 } from '@nestjs/common';
 
@@ -19,7 +17,7 @@ import { CreateCommentDto } from './dto/create.comment.dto';
 import { CommentsService } from './comments.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ReqResponse } from '../schemas/response';
-import { CommentStatus } from './dto/update.comment.dto';
+// import { CommentStatus } from './dto/update.comment.dto';
 import { PagingDto } from './dto/paging.comment.dto';
 
 @UseGuards(JwtAuthGuard)
@@ -57,15 +55,15 @@ export class CommentsController {
   async delete(@Param('id', ParseIntPipe) id: number): Promise<ReqResponse> {
     return await this.commentsService.deleteComment(id);
   }
-  
-  //update likesCount or dislikesCount of  a comment
-  @ApiBearerAuth('access-token')
-  @ApiCreatedResponse({ description: 'Update A Comment' })
-  @Put(':id')
-  async update(
-    @Param('commentId', ParseIntPipe) commentId: number,
-    @Body() data: CommentStatus,
-  ): Promise<ReqResponse> {
-    return await this.commentsService.updateComment(commentId, data);
-  }
+
+  // @ApiBearerAuth('access-token')
+  // @ApiCreatedResponse({ description: 'Update A Comment' })
+  // @Put(':id')
+  // async update(
+  //   @Param('id', ParseIntPipe) commentId: number,
+  //   @Body() status: CommentStatus,
+  // ): Promise<ReqResponse> {
+
+  //   return await this.commentsService.updateComment(commentId, status);
+  // }
 }

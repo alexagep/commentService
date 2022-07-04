@@ -3,6 +3,7 @@ import {
   forwardRef,
   Inject,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
@@ -35,6 +36,10 @@ export class LikesService {
   }
 
   async createLike(data: CreateLikeDto): Promise<ReqResponse> {
+    const comment = await this.commentsService.findComment(data.commentId);
+    if (!comment) {
+      throw new NotFoundException('Comment not found');
+    }
     if (data.like == data.dislike) {
       throw new BadRequestException('Like and Dislike cannot be same');
     }
@@ -42,7 +47,7 @@ export class LikesService {
     const likeHistory = await this.findLikes(data.commentId, user.id);
 
     if (likeHistory.length == 0) {
-      const likedHistory = [];
+      const likeHistoryCollect = [];
       let hasLiked = false;
       let hasDisliked = false;
 
@@ -54,13 +59,13 @@ export class LikesService {
         hasDisliked = true;
       }
 
-      likedHistory.push({
+      likeHistoryCollect.push({
         hasLiked: hasLiked,
         hasDisliked: hasDisliked,
         senderId: user.id,
         commentId: data.commentId,
       });
-      return await this.saveLikeRepo(likedHistory[0]);
+      return await this.saveLikeRepo(likeHistoryCollect[0]);
     } else {
       if (
         (likeHistory.length > 0 && likeHistory[0].hasLiked === data.like) ||
@@ -187,7 +192,7 @@ export class LikesService {
 
     for (const comment of comments) {
       const result = await this.likeRepository.find({
-        where: { senderId, commentId: comment.id },
+        where: { senderId, commentId: comment.id, hasLiked: true },
       });
       if (result[0]) {
         collect.push({
