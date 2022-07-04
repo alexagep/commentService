@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  HttpException,
   Inject,
   Injectable,
   NotFoundException,
@@ -16,7 +17,7 @@ import { CommentStatus } from './dto/update.comment.dto';
 import { LikesService } from '../likes/likes.service';
 import { PagingDto } from './dto/paging.comment.dto';
 import { PostService } from '../posts/post.service';
-import { resComment } from './dto/response.comment.dto';
+import { resComment, resFindComment } from './dto/response.comment.dto';
 
 @Injectable()
 export class CommentsService {
@@ -31,12 +32,15 @@ export class CommentsService {
   ) {}
 
   // find comments by post id
-  async findComments(postId: number, data: PagingDto) {
+  async findComments(
+    postId: number,
+    data: PagingDto,
+  ): Promise<Array<resFindComment>> {
     const pageIndex = data.pageIndex;
     const pageSize = data.pageSize;
     const limit = data.limit;
     const user: any = this.request.user;
-    const userId = user.id;
+    const userId: number = user.id;
 
     const post = await this.postService.findPostById(postId);
     if (post) {
@@ -59,7 +63,7 @@ export class CommentsService {
       if (result.length > 0) {
         return await this.commentIsLikedByUser(result, userId);
       } else {
-        throw new NotFoundException('this post has no post yet')
+        throw new NotFoundException('this post has no post yet');
       }
     } else {
       throw new NotFoundException('post not found');
@@ -72,7 +76,7 @@ export class CommentsService {
 
   //find comment by id
   async findComment(id: number): Promise<Comments> {
-    const comment = await this.commentRepository.findOne({ where: { id: id } });
+    const comment = await this.commentRepository.findOne({ where: { id } });
     return comment;
   }
 
@@ -105,33 +109,42 @@ export class CommentsService {
   }
 
   async deleteComment(id: number): Promise<ReqResponse> {
-    const valid = await this.validateUser(id);
-    if (valid) {
-      await this.commentRepository.delete(id);
+    const comment = await this.findComment(id);
+    if (comment) {
+      const valid = await this.validateUser(comment.senderId);
+      if (valid) {
+        await this.commentRepository.delete(id);
 
-      await this.likeService.deleteLike(id);
+        await this.likeService.deleteLike(id);
 
-      const resp: ReqResponse = {
-        status: 200,
-        success: true,
-        message: 'Comment deleted successfully',
-        error: false,
-      };
-      return resp;
+        const resp: ReqResponse = {
+          status: 200,
+          success: true,
+          message: 'Comment deleted successfully',
+          error: false,
+        };
+        return resp;
+      } else {
+        throw new UnauthorizedException();
+      }
     } else {
-      throw new UnauthorizedException();
+      throw new HttpException(
+        'Something Went wrong, Select Comment Again',
+        422,
+      );
     }
   }
 
   async updateComment(id: number, data: CommentStatus): Promise<ReqResponse> {
     const foundComment = await this.findComment(id);
-    if (foundComment && data === 'like') {
+
+    if (foundComment && data == 'like') {
       foundComment.likesCount += 1;
-    } else if (foundComment && data === 'dislike') {
+    } else if (foundComment && data == 'dislike') {
       foundComment.likesCount -= 1;
-    } else if (foundComment && data === 'switchLike') {
+    } else if (foundComment && data == 'switchLike') {
       foundComment.likesCount += 2;
-    } else if (foundComment && data === 'switchDislike') {
+    } else if (foundComment && data == 'switchDislike') {
       foundComment.likesCount -= 2;
     } else {
       throw new NotFoundException('Comment not found');
@@ -147,9 +160,11 @@ export class CommentsService {
     return resp;
   }
 
-  async validateUser(id: number): Promise<boolean> {
-    const collectedUser: any = this.request.user;
-    if (collectedUser.id === id) {
+  async validateUser(senderId: number): Promise<boolean> {
+    const user: any = this.request.user;
+    const userId = user.id;
+
+    if (userId === senderId) {
       return true;
     } else {
       return false;
