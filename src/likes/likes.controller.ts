@@ -23,18 +23,11 @@ export class LikesController {
   @ApiBearerAuth('access-token')
   @ApiCreatedResponse({
     type: CreateLikeDto,
-    description: 'Create A Like',
+    description: 'Like A Comment',
   })
   @Post()
   async create(@Body() Like: CreateLikeDto): Promise<ReqResponse> {
-    const savedLike = await this.likeService.createLike(Like);
+    const savedLike = await this.likeService.likeComment(Like);
     return savedLike;
-  }
-
-  @ApiBearerAuth('access-token')
-  @ApiCreatedResponse({ description: 'Delete A Like' })
-  @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number): Promise<ReqResponse> {
-    return await this.likeService.deleteLike(id);
   }
 }

@@ -27,7 +27,7 @@ export class PostService {
     private readonly postRepository: Repository<Posts>,
     @Inject(REQUEST)
     private readonly request: Request,
-  ) {}
+  ) { }
 
   async findPosts(data: PagingDto) {
     const pageIndex = data.pageIndex;
@@ -103,21 +103,14 @@ export class PostService {
     if (post) {
       const valid = await this.validateUser(post.senderId);
       if (valid) {
-        const deleteComment = await this.commentService.deleteCommentByPostId(
-          post.id,
-        );
-        if (deleteComment.success) {
-          await this.postRepository.delete(id);
-          const resp: ReqResponse = {
-            status: 200,
-            success: true,
-            message: 'Post deleted successfully',
-            error: false,
-          };
-          return resp;
-        } else {
-          throw new HttpException('Error deleting post', deleteComment.status);
-        }
+        await this.postRepository.delete(id);
+        const resp: ReqResponse = {
+          status: 200,
+          success: true,
+          message: 'Post deleted successfully',
+          error: false,
+        };
+        return resp;
       } else {
         throw new UnauthorizedException();
       }

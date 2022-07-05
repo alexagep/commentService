@@ -29,7 +29,7 @@ export class CommentsService {
     private readonly commentRepository: Repository<Comments>,
     @Inject(REQUEST)
     private readonly request: Request,
-  ) {}
+  ) { }
 
   // find comments by post id
   async findComments(
@@ -80,13 +80,6 @@ export class CommentsService {
     return comment;
   }
 
-  async deleteCommentByPostId(postId: number): Promise<ReqResponse> {
-    const comment = await this.commentRepository.findOne({ where: { postId } });
-    if (comment) {
-      return await this.deleteOperation(comment.id);
-    }
-  }
-
   async createComment(comment: CreateCommentDto): Promise<ReqResponse> {
     const user: any = this.request.user;
 
@@ -120,7 +113,15 @@ export class CommentsService {
     if (comment) {
       const valid = await this.validateUser(comment.senderId);
       if (valid) {
-        return await this.deleteOperation(id);
+        await this.commentRepository.delete(id);
+
+        const resp: ReqResponse = {
+          status: 200,
+          success: true,
+          message: 'Comment deleted successfully',
+          error: false,
+        };
+        return resp;
       } else {
         throw new UnauthorizedException();
       }
@@ -130,20 +131,6 @@ export class CommentsService {
         422,
       );
     }
-  }
-
-  async deleteOperation(id: number): Promise<ReqResponse> {
-    await this.commentRepository.delete(id);
-
-    await this.likeService.deleteLike(id);
-
-    const resp: ReqResponse = {
-      status: 200,
-      success: true,
-      message: 'Comment deleted successfully',
-      error: false,
-    };
-    return resp;
   }
 
   async updateComment(id: number, data: CommentStatus): Promise<ReqResponse> {
