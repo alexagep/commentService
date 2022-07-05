@@ -29,7 +29,7 @@ export class CommentsService {
     private readonly commentRepository: Repository<Comments>,
     @Inject(REQUEST)
     private readonly request: Request,
-  ) { }
+  ) {}
 
   // find comments by post id
   async findComments(

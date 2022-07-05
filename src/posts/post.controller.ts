@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 
 import {
@@ -25,7 +26,6 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { PagingDto } from '../comments/dto/paging.comment.dto';
 import { resPost } from './dto/response.post.dto';
 
-// @UseGuards(JwtAuthGuard)
 @ApiTags('Posts')
 @Controller('posts')
 export class PostController {

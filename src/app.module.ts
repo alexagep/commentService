@@ -10,6 +10,8 @@ import { CommentsModule } from './comments/comments.module';
 import { LikesModule } from './likes/likes.module';
 import { Likes } from './entities/likes.entity';
 import { Comments } from './entities/comments.entity';
+import { BenchmarkInterceptor } from './interceptors/benchmark.interceptor';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -33,6 +35,12 @@ import { Comments } from './entities/comments.entity';
     LikesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: BenchmarkInterceptor,
+    },
+  ],
 })
 export class AppModule {}
