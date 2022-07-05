@@ -9,9 +9,8 @@ import { PostModule } from '../posts/post.module';
 @Module({
   imports: [
     forwardRef(() => LikesModule),
-    forwardRef(() => PostModule),
     TypeOrmModule.forFeature([Comments]),
-    // PostModule,
+    PostModule,
   ],
   providers: [CommentsService],
   controllers: [CommentsController],

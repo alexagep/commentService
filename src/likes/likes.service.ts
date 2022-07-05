@@ -8,7 +8,7 @@ import {
 import { REQUEST } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ReqResponse } from '../schemas/response';
-import { Repository, createQueryBuilder } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Likes } from '../entities/likes.entity';
 import { CreateLikeDto } from './dto/create.like.dto';
 import { Request } from 'express';

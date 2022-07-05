@@ -16,18 +16,15 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { Request } from 'express';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PagingDto } from '../comments/dto/paging.comment.dto';
-import { CommentsService } from '../comments/comments.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export class PostService {
   constructor(
-    @Inject(forwardRef(() => CommentsService))
-    private commentService: CommentsService,
     @InjectRepository(Posts)
     private readonly postRepository: Repository<Posts>,
     @Inject(REQUEST)
     private readonly request: Request,
-  ) { }
+  ) {}
 
   async findPosts(data: PagingDto) {
     const pageIndex = data.pageIndex;
