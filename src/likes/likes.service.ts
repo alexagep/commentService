@@ -4,7 +4,6 @@ import {
   Inject,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -31,6 +30,13 @@ export class LikesService {
   async findLikes(commentId: number, userId: number): Promise<Likes[]> {
     const like = await this.likeRepository.find({
       where: { commentId, senderId: userId },
+    });
+    return like;
+  }
+
+  async findLikesByCommentId(commentId: number): Promise<Likes[]> {
+    const like = await this.likeRepository.find({
+      where: { commentId },
     });
     return like;
   }
@@ -166,24 +172,22 @@ export class LikesService {
   }
 
   async deleteLike(commentId: number): Promise<ReqResponse> {
-    const likeData = await this.likeRepository.find({
-      where: { commentId },
-    });
-    if (likeData[0]) {
-      const valid = await this.validateUser(likeData[0].senderId);
-      if (valid) {
-        await this.likeRepository.delete(commentId);
+    const likeData = await this.findLikesByCommentId(commentId);
+    if (likeData.length > 0) {
+      // const valid = await this.validateUser(likeData[0].senderId);
+      // if (valid) {
+      await this.likeRepository.delete(commentId);
 
-        const resp: ReqResponse = {
-          status: 200,
-          success: true,
-          message: 'Like deleted successfully',
-          error: false,
-        };
-        return resp;
-      } else {
-        throw new UnauthorizedException();
-      }
+      const resp: ReqResponse = {
+        status: 200,
+        success: true,
+        message: 'Like deleted successfully',
+        error: false,
+      };
+      return resp;
+      // } else {
+      //   throw new UnauthorizedException();
+      // }
     }
   }
 
