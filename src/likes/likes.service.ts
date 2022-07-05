@@ -41,7 +41,7 @@ export class LikesService {
     return like;
   }
 
-  async createLike(data: CreateLikeDto): Promise<ReqResponse> {
+  async likeComment(data: CreateLikeDto): Promise<ReqResponse> {
     const comment = await this.commentsService.findComment(data.commentId);
     if (!comment) {
       throw new NotFoundException('Comment not found');
@@ -168,26 +168,6 @@ export class LikesService {
         commentId,
         CommentStatus.SWITCH_DISLIKE,
       );
-    }
-  }
-
-  async deleteLike(commentId: number): Promise<ReqResponse> {
-    const likeData = await this.findLikesByCommentId(commentId);
-    if (likeData.length > 0) {
-      // const valid = await this.validateUser(likeData[0].senderId);
-      // if (valid) {
-      await this.likeRepository.delete(commentId);
-
-      const resp: ReqResponse = {
-        status: 200,
-        success: true,
-        message: 'Like deleted successfully',
-        error: false,
-      };
-      return resp;
-      // } else {
-      //   throw new UnauthorizedException();
-      // }
     }
   }
 
