@@ -82,18 +82,6 @@
                                     <span class="modifier">Async</span>
                                 <a href="#login" >login</a>
                             </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#login___" >login___</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#updatePassword" >updatePassword</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#validateUser" >validateUser</a>
-                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -112,12 +100,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(usersService: <a href="../injectables/UsersService.html" target="_self">UsersService</a>, request, jwtService: JwtService)</code>
+<code>constructor(request, jwtService: JwtService)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/auth/auth.service.ts:15</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/auth/auth.service.ts:7</a></div>
                             </td>
                         </tr>
 
@@ -134,18 +122,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                                <tr>
-                                                        <td>usersService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/UsersService.html" target="_self" >UsersService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
                                                 <tr>
                                                         <td>request</td>
                                                   
@@ -198,86 +174,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>login(authLoginDto: <a href="../classes/AuthLoginDto.html" target="_self">AuthLoginDto</a>)</code>
+                    <code>login(data: <a href="../classes/AuthLoginDto.html" target="_self">AuthLoginDto</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="23"
-                            class="link-to-prism">src/auth/auth.service.ts:23</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>authLoginDto</td>
-                                    <td>
-                                                <code><a href="../classes/AuthLoginDto.html" target="_self" >AuthLoginDto</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="login___"></a>
-                    <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>login___</b></span>
-                        <a href="#login___"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>login___(authLoginDto: <a href="../classes/AuthLoginDto.html" target="_self">AuthLoginDto</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="71"
-                            class="link-to-prism">src/auth/auth.service.ts:71</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="14"
+                            class="link-to-prism">src/auth/auth.service.ts:14</a></div>
                 </td>
             </tr>
 
@@ -297,163 +202,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>authLoginDto</td>
-                                    <td>
-                                                <code><a href="../classes/AuthLoginDto.html" target="_self" >AuthLoginDto</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="updatePassword"></a>
-                    <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>updatePassword</b></span>
-                        <a href="#updatePassword"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updatePassword(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, data: <a href="../classes/UpdatePassDto.html" target="_self">UpdatePassDto</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="46"
-                            class="link-to-prism">src/auth/auth.service.ts:46</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>id</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
                                 <tr>
                                     <td>data</td>
                                     <td>
-                                                <code><a href="../classes/UpdatePassDto.html" target="_self" >UpdatePassDto</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../entitys/User.html" target="_self" >Promise&lt;User&gt;</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="validateUser"></a>
-                    <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>validateUser</b></span>
-                        <a href="#validateUser"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>validateUser(authLoginDto: <a href="../classes/AuthLoginDto.html" target="_self">AuthLoginDto</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="59"
-                            class="link-to-prism">src/auth/auth.service.ts:59</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>authLoginDto</td>
-                                    <td>
                                                 <code><a href="../classes/AuthLoginDto.html" target="_self" >AuthLoginDto</a></code>
                                     </td>
 
@@ -469,7 +220,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../entitys/User.html" target="_self" >Promise&lt;User&gt;</a></code>
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
 
                     </div>
                     <div class="io-description">
@@ -485,88 +236,21 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
-  Inject,
-  Injectable,
-  Logger,
-  UnauthorizedException,
-} from &#x27;@nestjs/common&#x27;;
-import { UsersService } from &#x27;../users/users.service&#x27;;
-import { AuthLoginDto } from &#x27;../dto/auth-login.dto&#x27;;
-import { Users } from &#x27;../entities/user.entity&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Inject, Injectable } from &#x27;@nestjs/common&#x27;;
+import { AuthLoginDto } from &#x27;./dto/auth-login.dto&#x27;;
 import { REQUEST } from &#x27;@nestjs/core&#x27;;
 import { JwtService } from &#x27;@nestjs/jwt&#x27;;
-import { UpdatePassDto } from &#x27;../dto/update-pass.dto&#x27;;
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
     @Inject(REQUEST)
     private readonly request,
     private jwtService: JwtService,
   ) {}
 
-  async login(authLoginDto: AuthLoginDto): Promise&lt;any&gt; {
-    const { email, password } &#x3D; authLoginDto;
-    Logger.log(
-      &#x27;**************&#x27;,
-      authLoginDto.email,
-      &#x27;*************&#x27;,
-      authLoginDto.password,
-    );
-    const user &#x3D; await this.usersService.validatePassword(email, password);
-
-    if (user) {
-      const collectUser &#x3D; await this.usersService.findUserByEmail(email);
-      const payload &#x3D; { email, password, id: collectUser.id };
-      Logger.log(&#x27;payload_****************&#x27;, payload);
-
-      return {
-        access_token: this.jwtService.sign(payload),
-      };
-    } else {
-      throw new UnauthorizedException();
-    }
-  }
-
-  async updatePassword(id: number, data: UpdatePassDto): Promise&lt;User&gt; {
-    const user &#x3D; this.request.user;
-    Logger.log(&#x27;typeof_user_****************&#x27;, typeof user.id, typeof id);
-    if (user.id &#x3D;&#x3D;&#x3D; id &amp;&amp; data.password &#x3D;&#x3D;&#x3D; data.rePassword) {
-      //  if (data.password &#x3D;&#x3D;&#x3D; data.rePassword) {
-      return await this.usersService.updatePassword(id, data);
-    } else {
-      Logger.error(user);
-      throw new UnauthorizedException();
-    }
-    // return await this.usersService.updatePassword(id, data);
-  }
-
-  async validateUser(authLoginDto: AuthLoginDto): Promise&lt;User&gt; {
-    const { email, password } &#x3D; authLoginDto;
-
-    const user &#x3D; await this.usersService.findUserByEmail(email);
-
-    if (user &amp;&amp; user.password &#x3D;&#x3D;&#x3D; password) {
-      return user;
-    } else {
-      throw new UnauthorizedException();
-    }
-  }
-
-  async login___(authLoginDto: AuthLoginDto): Promise&lt;any&gt; {
-    const { email, password } &#x3D; authLoginDto;
-    Logger.log(
-      &#x27;**************&#x27;,
-      authLoginDto.email,
-      &#x27;*************&#x27;,
-      authLoginDto.password,
-    );
-    const collectUser &#x3D; await this.usersService.findUserByEmail(email);
-    const payload &#x3D; { email, password, id: collectUser.id };
-    Logger.log(&#x27;payload_****************&#x27;, payload);
-
+  async login(data: AuthLoginDto): Promise&lt;any&gt; {
+    const payload &#x3D; { id: data.id };
     return {
       access_token: this.jwtService.sign(payload),
     };

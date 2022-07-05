@@ -11,7 +11,8 @@ import { LikesModule } from './likes/likes.module';
 import { Likes } from './entities/likes.entity';
 import { Comments } from './entities/comments.entity';
 import { BenchmarkInterceptor } from './interceptors/benchmark.interceptor';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -41,6 +42,10 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
       provide: APP_INTERCEPTOR,
       useClass: BenchmarkInterceptor,
     },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    }
   ],
 })
 export class AppModule {}

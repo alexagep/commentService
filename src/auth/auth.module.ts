@@ -26,6 +26,7 @@ import { ValidUserMiddleware } from '../middleware/auth.middleware';
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
+  exports: [AuthService],
 })
 export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

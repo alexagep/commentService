@@ -28,19 +28,16 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content injectable">
+               <div class="content controller">
                    <div class="content-data">
 
 
 
 
 
-
-
-
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li >JwtStrategy</li>
+  <li>Controllers</li>
+  <li >LikesController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -58,8 +55,16 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/auth/jwt.strategy.ts</code>
+            <code>src/likes/likes.controller.ts</code>
         </p>
+
+            <p class="comment">
+                <h3>Prefix</h3>
+            </p>
+            <p class="comment">
+                <code>likes</code>
+            </p>
+
 
 
 
@@ -80,7 +85,7 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#validate" >validate</a>
+                                <a href="#create" >create</a>
                             </li>
                         </ul>
                     </td>
@@ -95,25 +100,6 @@
 </section>
 
             <section>
-    <h3 id="constructor">Constructor</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-<code>constructor()</code>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/auth/jwt.strategy.ts:6</a></div>
-                            </td>
-                        </tr>
-
-            </tbody>
-        </table>
-</section>
-
-            <section>
     
     <h3 id="methods">
         Methods
@@ -122,26 +108,33 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="validate"></a>
+                    <a name="create"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
-                        <span ><b>validate</b></span>
-                        <a href="#validate"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>create</b></span>
+                        <a href="#create"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>validate(payload: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    <code>create(Like: <a href="../classes/CreateLikeDto.html" target="_self">CreateLikeDto</a>)</code>
                 </td>
             </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@ApiBearerAuth(&#x27;access-token&#x27;)<br />@ApiCreatedResponse({type: CreateLikeDto, description: &#x27;Like A Comment&#x27;})<br />@Post()<br /></code>
+                </td>
+            </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="15"
-                            class="link-to-prism">src/auth/jwt.strategy.ts:15</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="21"
+                            class="link-to-prism">src/likes/likes.controller.ts:21</a></div>
                 </td>
             </tr>
 
@@ -162,9 +155,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>payload</td>
+                                    <td>Like</td>
                                     <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                <code><a href="../classes/CreateLikeDto.html" target="_self" >CreateLikeDto</a></code>
                                     </td>
 
                                     <td>
@@ -179,7 +172,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>unknown</code>
+                        <b>Returns : </b>        <code><a href="../interfaces/ReqResponse.html" target="_self" >Promise&lt;ReqResponse&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -189,36 +182,41 @@
             </tr>
         </tbody>
     </table>
-</section>
-
-    </div>
+</section>    </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ExtractJwt, Strategy } from &#x27;passport-jwt&#x27;;
-import { PassportStrategy } from &#x27;@nestjs/passport&#x27;;
-import { Injectable } from &#x27;@nestjs/common&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Body, Controller, Post, UseGuards } from &#x27;@nestjs/common&#x27;;
 
-@Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
-    super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
-      secretOrKey: process.env.JWT_SECRET,
-    });
-  }
+import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from &#x27;@nestjs/swagger&#x27;;
+import { CreateLikeDto } from &#x27;./dto/create.like.dto&#x27;;
+import { LikesService } from &#x27;./likes.service&#x27;;
+import { JwtAuthGuard } from &#x27;../auth/jwt-auth.guard&#x27;;
+import { ReqResponse } from &#x27;../schemas/response&#x27;;
 
-  async validate(payload: any) {
-    return {
-      id: payload.id,
-    };
+@ApiTags(&#x27;Likes&#x27;)
+@UseGuards(JwtAuthGuard)
+@Controller(&#x27;likes&#x27;)
+export class LikesController {
+  constructor(private readonly likeService: LikesService) {}
+
+  @ApiBearerAuth(&#x27;access-token&#x27;)
+  @ApiCreatedResponse({
+    type: CreateLikeDto,
+    description: &#x27;Like A Comment&#x27;,
+  })
+  @Post()
+  async create(@Body() Like: CreateLikeDto): Promise&lt;ReqResponse&gt; {
+    const savedLike &#x3D; await this.likeService.likeComment(Like);
+    return savedLike;
   }
 }
 </code></pre>
     </div>
-
 </div>
+
+
+
 
 
 
@@ -257,8 +255,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'JwtStrategy.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
+            var COMPODOC_CURRENT_PAGE_URL = 'LikesController.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

@@ -203,8 +203,14 @@ export class BenchmarkInterceptor implements NestInterceptor {
     const request: Request &#x3D; ctx.getRequest();
 
     const now &#x3D; Date.now();
+    //executionContext inherits from ArgumentsHost which includes some helper functions to write more readable interceptors
+    //before request reaches the handler
     console.log(&#x60;Endpoint:  ${request.url}, Method: ${request.method}&#x60;);
 
+    //when response is sent
+    //callHandler executes the handle() method which runs route handler(it means if we don&#x27;t use handle() method, our request won&#x27;t reach to route handler)
+    //tap() is used to perform some action after the response is sent
+    //pipe() is used to perform some action before the response is sent
     return next
       .handle()
       .pipe(tap(() &#x3D;&gt; console.log(&#x60;Execution Time:  ${Date.now() - now}ms&#x60;)));
