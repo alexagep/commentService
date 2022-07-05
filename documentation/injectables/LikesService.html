@@ -1,0 +1,1090 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>nest_mongo_jwt documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">nest_mongo_jwt documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li >LikesService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/likes/likes.service.ts</code>
+        </p>
+
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findLikes" >findLikes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findLikesByCommentId" >findLikesByCommentId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#likeComment" >likeComment</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#recognizeCommentIsLiked" >recognizeCommentIsLiked</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#saveLikeRepo" >saveLikeRepo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateLikeCount" >updateLikeCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateLikeRepo" >updateLikeRepo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#validateUser" >validateUser</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(commentsService: <a href="../injectables/CommentsService.html" target="_self">CommentsService</a>, likeRepository: <a href="../entitys/Likes.html" target="_self">Repository&lt;Likes&gt;</a>, request: Request)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/likes/likes.service.ts:20</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>commentsService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/CommentsService.html" target="_self" >CommentsService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>likeRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../entitys/Likes.html" target="_self" >Repository&lt;Likes&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>request</td>
+                                                  
+                                                        <td>
+                                                                    <code>Request</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findLikes"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>findLikes</b></span>
+                        <a href="#findLikes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findLikes(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="30"
+                            class="link-to-prism">src/likes/likes.service.ts:30</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>commentId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../entitys/Likes.html" target="_self" >Promise&lt;Likes[]&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findLikesByCommentId"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>findLikesByCommentId</b></span>
+                        <a href="#findLikesByCommentId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findLikesByCommentId(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="37"
+                            class="link-to-prism">src/likes/likes.service.ts:37</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>commentId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../entitys/Likes.html" target="_self" >Promise&lt;Likes[]&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="likeComment"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>likeComment</b></span>
+                        <a href="#likeComment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>likeComment(data: <a href="../classes/CreateLikeDto.html" target="_self">CreateLikeDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="44"
+                            class="link-to-prism">src/likes/likes.service.ts:44</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="../classes/CreateLikeDto.html" target="_self" >CreateLikeDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/ReqResponse.html" target="_self" >Promise&lt;ReqResponse&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="recognizeCommentIsLiked"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>recognizeCommentIsLiked</b></span>
+                        <a href="#recognizeCommentIsLiked"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>recognizeCommentIsLiked(senderId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, comments: <a href="../interfaces/resComment.html" target="_self">Array&lt;resComment&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="174"
+                            class="link-to-prism">src/likes/likes.service.ts:174</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>senderId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>comments</td>
+                                    <td>
+                                                <code><a href="../interfaces/resComment.html" target="_self" >Array&lt;resComment&gt;</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveLikeRepo"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>saveLikeRepo</b></span>
+                        <a href="#saveLikeRepo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveLikeRepo(data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="134"
+                            class="link-to-prism">src/likes/likes.service.ts:134</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateLikeCount"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>updateLikeCount</b></span>
+                        <a href="#updateLikeCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateLikeCount(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, likeState: <a href="../undefineds/CommentStatus.html" target="_self">CommentStatus</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="150"
+                            class="link-to-prism">src/likes/likes.service.ts:150</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>commentId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>likeState</td>
+                                    <td>
+                                                <code><a href="../miscellaneous/enumerations.html#CommentStatus" target="_self" >CommentStatus</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateLikeRepo"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>updateLikeRepo</b></span>
+                        <a href="#updateLikeRepo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateLikeRepo(data)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="113"
+                            class="link-to-prism">src/likes/likes.service.ts:113</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>data</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="validateUser"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>validateUser</b></span>
+                        <a href="#validateUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>validateUser(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="196"
+                            class="link-to-prism">src/likes/likes.service.ts:196</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from &#x27;@nestjs/common&#x27;;
+import { REQUEST } from &#x27;@nestjs/core&#x27;;
+import { InjectRepository } from &#x27;@nestjs/typeorm&#x27;;
+import { ReqResponse } from &#x27;../schemas/response&#x27;;
+import { Repository } from &#x27;typeorm&#x27;;
+import { Likes } from &#x27;../entities/likes.entity&#x27;;
+import { CreateLikeDto } from &#x27;./dto/create.like.dto&#x27;;
+import { Request } from &#x27;express&#x27;;
+import { CommentsService } from &#x27;../comments/comments.service&#x27;;
+import { CommentStatus } from &#x27;../comments/dto/update.comment.dto&#x27;;
+import { resComment } from &#x27;../comments/dto/response.comment.dto&#x27;;
+
+@Injectable()
+export class LikesService {
+  constructor(
+    @Inject(forwardRef(() &#x3D;&gt; CommentsService))
+    private commentsService: CommentsService,
+    @InjectRepository(Likes)
+    private readonly likeRepository: Repository&lt;Likes&gt;,
+    @Inject(REQUEST)
+    private readonly request: Request,
+  ) {}
+
+  async findLikes(commentId: number, userId: number): Promise&lt;Likes[]&gt; {
+    const like &#x3D; await this.likeRepository.find({
+      where: { commentId, senderId: userId },
+    });
+    return like;
+  }
+
+  async findLikesByCommentId(commentId: number): Promise&lt;Likes[]&gt; {
+    const like &#x3D; await this.likeRepository.find({
+      where: { commentId },
+    });
+    return like;
+  }
+
+  async likeComment(data: CreateLikeDto): Promise&lt;ReqResponse&gt; {
+    const comment &#x3D; await this.commentsService.findComment(data.commentId);
+    if (!comment) {
+      throw new NotFoundException(&#x27;Comment not found&#x27;);
+    }
+    if (data.like &#x3D;&#x3D; data.dislike) {
+      throw new BadRequestException(&#x27;Like and Dislike cannot be same&#x27;);
+    }
+    const user: any &#x3D; this.request.user;
+    const likeHistory &#x3D; await this.findLikes(data.commentId, user.id);
+
+    if (likeHistory.length &#x3D;&#x3D; 0) {
+      const likeHistoryCollect &#x3D; [];
+      let hasLiked &#x3D; false;
+      let hasDisliked &#x3D; false;
+
+      if (data.like) {
+        hasLiked &#x3D; true;
+        await this.updateLikeCount(data.commentId, CommentStatus.LIKE);
+      } else if (data.dislike) {
+        await this.updateLikeCount(data.commentId, CommentStatus.DISLIKE);
+        hasDisliked &#x3D; true;
+      }
+
+      likeHistoryCollect.push({
+        hasLiked: hasLiked,
+        hasDisliked: hasDisliked,
+        senderId: user.id,
+        commentId: data.commentId,
+      });
+      return await this.saveLikeRepo(likeHistoryCollect[0]);
+    } else {
+      if (
+        (likeHistory.length &gt; 0 &amp;&amp; likeHistory[0].hasLiked &#x3D;&#x3D;&#x3D; data.like) ||
+        (likeHistory.length &gt; 0 &amp;&amp; likeHistory[0].hasDisliked &#x3D;&#x3D;&#x3D; data.dislike)
+      ) {
+        return {
+          status: 400,
+          success: false,
+          message: &#x27;You have already voted this comment&#x27;,
+          error: true,
+        };
+      } else if (
+        likeHistory.length &gt; 0 &amp;&amp;
+        likeHistory[0].hasDisliked &amp;&amp;
+        data.like
+      ) {
+        await this.updateLikeCount(data.commentId, CommentStatus.SWITCH_LIKE);
+
+        likeHistory[0].hasDisliked &#x3D; false;
+        likeHistory[0].hasLiked &#x3D; true;
+        return await this.updateLikeRepo(likeHistory[0]);
+      } else if (
+        likeHistory.length &gt; 0 &amp;&amp;
+        likeHistory[0].hasLiked &amp;&amp;
+        data.dislike
+      ) {
+        await this.updateLikeCount(
+          data.commentId,
+          CommentStatus.SWITCH_DISLIKE,
+        );
+
+        likeHistory[0].hasDisliked &#x3D; true;
+        likeHistory[0].hasLiked &#x3D; false;
+        return await this.updateLikeRepo(likeHistory[0]);
+      }
+    }
+  }
+
+  async updateLikeRepo(data) {
+    await this.likeRepository
+      .createQueryBuilder()
+      .update(Likes)
+      .set({
+        hasDisliked: data.hasDisliked,
+        hasLiked: data.hasLiked,
+        commentId: data.commentId,
+        senderId: data.senderId,
+      })
+      .where(&#x27;id &#x3D; :id&#x27;, { id: data.id })
+      .execute();
+
+    return {
+      status: 200,
+      success: true,
+      message: &#x27;You have voted this comment successfully&#x27;,
+      error: false,
+    };
+  }
+
+  async saveLikeRepo(data: any) {
+    await this.likeRepository.save({
+      senderId: data.senderId,
+      commentId: data.commentId,
+      hasDisliked: data.hasDisliked,
+      hasLiked: data.hasLiked,
+    });
+
+    return {
+      status: 200,
+      success: true,
+      message: &#x27;You have voted this comment successfully&#x27;,
+      error: false,
+    };
+  }
+
+  async updateLikeCount(
+    commentId: number,
+    likeState: CommentStatus,
+  ): Promise&lt;void&gt; {
+    if (likeState &#x3D;&#x3D;&#x3D; &#x27;like&#x27;) {
+      await this.commentsService.updateComment(commentId, CommentStatus.LIKE);
+    } else if (likeState &#x3D;&#x3D;&#x3D; &#x27;dislike&#x27;) {
+      await this.commentsService.updateComment(
+        commentId,
+        CommentStatus.DISLIKE,
+      );
+    } else if (likeState &#x3D;&#x3D;&#x3D; &#x27;switchLike&#x27;) {
+      await this.commentsService.updateComment(
+        commentId,
+        CommentStatus.SWITCH_LIKE,
+      );
+    } else if (likeState &#x3D;&#x3D;&#x3D; &#x27;switchDislike&#x27;) {
+      await this.commentsService.updateComment(
+        commentId,
+        CommentStatus.SWITCH_DISLIKE,
+      );
+    }
+  }
+
+  async recognizeCommentIsLiked(senderId: number, comments: Array&lt;resComment&gt;) {
+    const collect &#x3D; [];
+
+    for (const comment of comments) {
+      const result &#x3D; await this.likeRepository.find({
+        where: { senderId, commentId: comment.id, hasLiked: true },
+      });
+      if (result[0]) {
+        collect.push({
+          ...comment,
+          hasLikedByUser: true,
+        });
+      } else {
+        collect.push({
+          ...comment,
+          hasLikedByUser: false,
+        });
+      }
+    }
+    return collect;
+  }
+
+  async validateUser(id: number): Promise&lt;boolean&gt; {
+    const like &#x3D; await this.likeRepository.findOne({ where: { id: id } });
+    const user: any &#x3D; this.request.user;
+
+    if (like.senderId &#x3D;&#x3D;&#x3D; user.id) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'LikesService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

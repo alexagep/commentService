@@ -16,13 +16,10 @@ import {
 } from '@nestjs/swagger';
 import { CreateCommentDto } from './dto/create.comment.dto';
 import { CommentsService } from './comments.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ReqResponse } from '../schemas/response';
-// import { CommentStatus } from './dto/update.comment.dto';
 import { PagingDto } from './dto/paging.comment.dto';
 
 @ApiTags('Comments')
-@UseGuards(JwtAuthGuard)
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
@@ -57,15 +54,4 @@ export class CommentsController {
   async delete(@Param('id', ParseIntPipe) id: number): Promise<ReqResponse> {
     return await this.commentsService.deleteComment(id);
   }
-
-  // @ApiBearerAuth('access-token')
-  // @ApiCreatedResponse({ description: 'Update A Comment' })
-  // @Put(':id')
-  // async update(
-  //   @Param('id', ParseIntPipe) commentId: number,
-  //   @Body() status: CommentStatus,
-  // ): Promise<ReqResponse> {
-
-  //   return await this.commentsService.updateComment(commentId, status);
-  // }
 }

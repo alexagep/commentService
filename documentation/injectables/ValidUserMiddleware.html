@@ -58,7 +58,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/middleware/logger.middleware.ts</code>
+            <code>src/middleware/auth.middleware.ts</code>
         </p>
 
 
@@ -120,7 +120,7 @@
             <tr>
                 <td class="col-md-4">
                     <div class="io-line">Defined in <a href="" data-line="12"
-                            class="link-to-prism">src/middleware/logger.middleware.ts:12</a></div>
+                            class="link-to-prism">src/middleware/auth.middleware.ts:12</a></div>
                 </td>
             </tr>
 
@@ -210,12 +210,12 @@ import { Request, Response, NextFunction } from &#x27;express&#x27;;
 @Injectable()
 export class ValidUserMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    const { email, password } &#x3D; req.body;
+    const { id } &#x3D; req.body;
     Logger.log(&#x27;*******MIDDLEWARE**********&#x27;, req.body);
-    if (email &amp;&amp; password) {
+    if (id) {
       next();
     } else {
-      throw new HttpException(&#x27;Email and password are required&#x27;, 400);
+      throw new HttpException(&#x27;userID is required&#x27;, 400);
     }
   }
 }
