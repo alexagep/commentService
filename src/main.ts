@@ -27,15 +27,21 @@ async function bootstrap() {
     )
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
-
-  SwaggerModule.setup('/swagger', app, document);
-
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
     }),
   );
+
+  const document = SwaggerModule.createDocument(app, config);
+
+  SwaggerModule.setup('/swagger', app, document);
+
+  // app.useGlobalPipes(
+  //   new ValidationPipe({
+  //     whitelist: true,
+  //   }),
+  // );
   await app.listen(process.env.PORT);
 }
 bootstrap();
