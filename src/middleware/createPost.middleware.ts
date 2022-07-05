@@ -8,14 +8,14 @@ import {
 import { Request, Response, NextFunction } from 'express';
 
 @Injectable()
-export class ValidUserMiddleware implements NestMiddleware {
+export class CreatePostMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.body;
-    Logger.log('*******MIDDLEWARE**********', req.body);
-    if (id) {
+    const { content } = req.body;
+    Logger.log('*******Create Post MIDDLEWARE**********', req.method);
+    if (content) {
       next();
     } else {
-      throw new HttpException('userID is required', 400);
+      throw new HttpException('content is required', 400);
     }
   }
 }

@@ -4,7 +4,6 @@ import {
   NotFoundException,
   Scope,
   UnauthorizedException,
-  forwardRef,
   HttpException,
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
