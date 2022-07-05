@@ -15,6 +15,7 @@ import {
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostService } from './post.service';
@@ -25,6 +26,7 @@ import { PagingDto } from '../comments/dto/paging.comment.dto';
 import { resPost } from './dto/response.post.dto';
 
 // @UseGuards(JwtAuthGuard)
+@ApiTags('Posts')
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
@@ -39,6 +41,7 @@ export class PostController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   @ApiCreatedResponse({ type: CreatePostDto, description: 'Create A Post' })
   @Post('/create')
   async create(@Body() post: CreatePostDto): Promise<ReqResponse> {

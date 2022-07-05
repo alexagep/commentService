@@ -12,6 +12,7 @@ import {
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { CreateCommentDto } from './dto/create.comment.dto';
 import { CommentsService } from './comments.service';
@@ -20,6 +21,7 @@ import { ReqResponse } from '../schemas/response';
 // import { CommentStatus } from './dto/update.comment.dto';
 import { PagingDto } from './dto/paging.comment.dto';
 
+@ApiTags('Comments')
 @UseGuards(JwtAuthGuard)
 @Controller('comments')
 export class CommentsController {
@@ -27,12 +29,12 @@ export class CommentsController {
 
   @ApiBearerAuth('access-token')
   @ApiOkResponse({
-    isArray: false,
-    description: 'Get An Comment',
+    isArray: true,
+    description: 'Get Comments of a post',
   })
-  @Post(':id')
+  @Post(':postId')
   async find(
-    @Param('id', ParseIntPipe) postId: number,
+    @Param('postId', ParseIntPipe) postId: number,
     @Body() data: PagingDto,
   ) {
     return await this.commentsService.findComments(postId, data);
