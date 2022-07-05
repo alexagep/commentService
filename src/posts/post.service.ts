@@ -4,6 +4,8 @@ import {
   NotFoundException,
   Scope,
   UnauthorizedException,
+  forwardRef,
+  HttpException,
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,10 +16,13 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { Request } from 'express';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PagingDto } from '../comments/dto/paging.comment.dto';
+import { CommentsService } from '../comments/comments.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export class PostService {
   constructor(
+    @Inject(forwardRef(() => CommentsService))
+    private commentService: CommentsService,
     @InjectRepository(Posts)
     private readonly postRepository: Repository<Posts>,
     @Inject(REQUEST)
@@ -94,25 +99,41 @@ export class PostService {
   }
 
   async deletePost(id: number): Promise<ReqResponse> {
-    const validPost = await this.findPostByIdAndSenderId(id);
-
-    if (validPost) {
-      await this.postRepository.delete(id);
-      const resp: ReqResponse = {
-        status: 200,
-        success: true,
-        message: 'Post deleted successfully',
-        error: false,
-      };
-      return resp;
+    const post = await this.findPostById(id);
+    if (post) {
+      const valid = await this.validateUser(post.senderId);
+      if (valid) {
+        const deleteComment = await this.commentService.deleteCommentByPostId(
+          post.id,
+        );
+        if (deleteComment.success) {
+          await this.postRepository.delete(id);
+          const resp: ReqResponse = {
+            status: 200,
+            success: true,
+            message: 'Post deleted successfully',
+            error: false,
+          };
+          return resp;
+        } else {
+          throw new HttpException('Error deleting post', deleteComment.status);
+        }
+      } else {
+        throw new UnauthorizedException();
+      }
     } else {
-      throw new UnauthorizedException();
+      throw new HttpException(
+        'Something Went wrong, Select Comment Again',
+        422,
+      );
     }
   }
 
   async findPostByIdAndSenderId(id: number): Promise<Posts> {
     const user: any = this.request.user;
     const userId = user.id;
+
+    console.log(userId, id);
 
     return await this.postRepository.findOne({
       where: { id, senderId: userId },
