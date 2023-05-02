@@ -16,11 +16,19 @@ import { Request } from 'express';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PagingDto } from '../comments/dto/paging.comment.dto';
 
+/* the scope property is set to Scope.REQUEST, which means that a new instance of 
+this service will be created for each incoming request to ensure that each request has 
+its own isolated instance of the service. */
 @Injectable({ scope: Scope.REQUEST })
 export class PostService {
   constructor(
+    /* The @InjectRepository(Posts) decorator is used to inject a Repository instance 
+    for the Posts entity provided by TypeORM. This repository instance can then be used 
+    to perform database operations for the Posts entity. */
     @InjectRepository(Posts)
     private readonly postRepository: Repository<Posts>,
+    /* The @Inject(REQUEST) decorator in NestJS is used to inject the Request 
+    object into a class constructor or a method */
     @Inject(REQUEST)
     private readonly request: Request,
   ) {}
@@ -31,6 +39,7 @@ export class PostService {
     const limit = data.limit;
 
     const result = this.postRepository
+      //Creates a new query builder that can be used to build a SQL query.
       .createQueryBuilder('posts')
       .select(['posts.id', 'posts.senderId', 'posts.content', 'posts.postedAt'])
       .skip((pageIndex - 1) * pageSize)

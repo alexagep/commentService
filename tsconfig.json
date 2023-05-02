@@ -5,6 +5,9 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "tsdocMetadata": {
+      "enabled": true
+    },
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
     "sourceMap": true,

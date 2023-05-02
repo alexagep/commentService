@@ -27,6 +27,19 @@ async function bootstrap() {
     )
     .build();
 
+  /* This is configuring a global validation pipe for the NestJS application.
+
+      In NestJS, pipes are used to intercept and transform data before it is processed by
+      a controller or a service.
+
+      The ValidationPipe is a built-in pipe that can be used to automatically validate incoming 
+      requests based on the specified validation rules. By default, it uses the class-validator 
+      library to perform the validation.
+
+      In the code snippet, the ValidationPipe is instantiated with an option of 
+      whitelist: true, which means that any incoming data that does not match the defined validation 
+      rules will be automatically removed from the request object. This is useful for ensuring 
+      that only valid data is processed by the application */
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
